@@ -1,0 +1,4 @@
+- hosts: taskhosts
+  tasks:
+  - ping:
+  - shell: whoami
