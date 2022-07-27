@@ -5,6 +5,19 @@ import asyncio
 from collections.abc import AsyncIterator
 
 from ansible_sdk import AnsibleJobEvent
+from ansible_sdk.model.job_event import (
+    VerboseEvent,
+    PlaybookOnPlayStartEvent,
+    PlaybookOnStartEvent,
+    PlaybookOnTaskStartEvent,
+    PlaybookOnStats,
+)
+from ansible_sdk.model.job_event import (
+    RunnerOnAsyncOKEvent,
+    RunnerOnAsyncPollEvent,
+    RunnerOnOKEvent,
+    RunnerOnStartEvent,
+)
 
 
 class AnsibleJobStatus:
@@ -23,7 +36,26 @@ class AnsibleJobStatus:
             # yield any events we haven't yet
             for ev in self._events[index:]:
                 index += 1
-                yield ev
+                if ev["event"] == "verbose":
+                    yield VerboseEvent(**ev)
+                elif ev["event"] == "playbook_on_start":
+                    yield PlaybookOnStartEvent(**ev)
+                elif ev["event"] == "playbook_on_play_start":
+                    yield PlaybookOnPlayStartEvent(**ev)
+                elif ev["event"] == "playbook_on_task_start":
+                    yield PlaybookOnTaskStartEvent(**ev)
+                elif ev["event"] == "runner_on_start":
+                    yield RunnerOnStartEvent(**ev)
+                elif ev["event"] == "runner_on_ok":
+                    yield RunnerOnOKEvent(**ev)
+                elif ev["event"] == "runner_on_async_poll":
+                    yield RunnerOnAsyncPollEvent(**ev)
+                elif ev["event"] == "runner_on_async_ok":
+                    yield RunnerOnAsyncOKEvent(**ev)
+                elif ev["event"] == "playbook_on_stats":
+                    yield PlaybookOnStats(**ev)
+                else:
+                    yield ev
 
             if self.done:
                 return
