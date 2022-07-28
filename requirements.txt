@@ -1,0 +1,3 @@
+ansible-core
+ansible-runner
+receptorctl
