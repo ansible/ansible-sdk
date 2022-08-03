@@ -14,10 +14,14 @@ Check out the source code from `github <https://github.com/ansible/ansible-sdk>`
 
 Or download from the `releases page <https://github.com/ansible/ansible-sdk/releases>`_
 
-Then install::
+Create a virtual environment using Python3 and activate it::
 
-  $ pip install virtualenvwrapper
-  $ mkvirtualenv ansible-sdk
+  $ virtualenv env
+  $ source env/bin/activate
+
+Install Ansible SDK using pip::
+
+  $ cd ansible-sdk
   $ pip install -e .
 
 Building the RPM
