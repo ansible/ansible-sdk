@@ -38,4 +38,3 @@ class AnsibleJobStatus:
     @property
     def done(self) -> bool:
         return self._done.is_set()
-

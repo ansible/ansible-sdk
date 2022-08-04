@@ -47,23 +47,23 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
         # start payload creation first by explicitly creating a task; this will start feeding our pipe now
         payload_builder = asyncio.create_task(asyncio_write_payload_and_close(payload_writer=payload_writer, **get_runner_args(job_def)))
 
-        #print('starting worker')
+        # print('starting worker')
         runner_args = get_runner_args(job_def)
         # FIXME: deterministic cleanup
         runner_args['private_data_dir'] = tempfile.mkdtemp()
 
         # by using run_async, we can await
-        runner = await asyncio.create_task(async_runner.run_async(streamer='worker', _input=payload_reader, _output=results_writer, **runner_args))
-        #print('worker running')
+        await asyncio.create_task(async_runner.run_async(streamer='worker', _input=payload_reader, _output=results_writer, **runner_args))
+        # print('worker running')
 
         # FIXME: it's poor form to fire-and-forget in case there's a failure on the payload builder (which could theoretically result
         #  in a truncated or forever-blocked work submission), but we can't await before submission starts, since a large
         #  payload can't be completely written before consumption begins. Look into things like aiozipstream and a lighter-weight
         #  file-like that would allow for a more asyncio-native solution. Also think through how we'd recover a failure at this
         #  point, since the work has already been submitted with a potentially bad payload.
-        #print('awaiting payload builder')
+        # print('awaiting payload builder')
         await payload_builder
-        #print('payload builder completed ok')
+        # print('payload builder completed ok')
 
         # FIXME: small line-length limit is problematic with large stdout and zip payloads;
         #  the latter can be handled with an explicit chunked read + copy to disk until separator or
