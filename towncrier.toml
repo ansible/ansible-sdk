@@ -1,4 +1,4 @@
 [tool.towncrier]
 package = "ansible_sdk"
-directory = "changelogs/fragments"
+directory = "changelog/fragments"
 filename = "CHANGLOG.rst"

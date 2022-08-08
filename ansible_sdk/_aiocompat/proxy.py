@@ -3,6 +3,7 @@ import asyncio
 from functools import partial, wraps
 from types import ModuleType
 
+
 # hacky threadpool proxy wrapper around modules, adapted from http://zderadicka.eu/asyncio-proxy-for-blocking-functions/
 class AsyncProxy(object):
     def __init__(self, wrapped):
