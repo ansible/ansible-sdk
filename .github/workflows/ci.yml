@@ -21,7 +21,45 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install tox
-        run: sudo apt-get install -y tox
+        run: sudo pip install tox
+
+      - name: Create tox environment
+        run: tox --notest
+
+      - name: Run tests
+        run: tox
+
+  unit:
+    name: Unit - ${{ matrix.py_version.name }}
+    runs-on: ubuntu-20.04
+    env:
+      TOXENV: ${{ matrix.py_version.tox_env }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        py_version:
+          - name: '3.8'
+            tox_env: unit-py38
+          - name: '3.9'
+            tox_env: unit-py39
+          - name: '3.10'
+            tox_env: unit-py310
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.py_version.name }}
+
+      - name: Output Python info
+        run: python --version --version && which python
+
+      - name: Install tox
+        run: sudo pip install tox
 
       - name: Create tox environment
         run: tox --notest
