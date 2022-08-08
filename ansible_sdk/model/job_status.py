@@ -30,7 +30,7 @@ class AnsibleJobStatus:
 
     @property
     async def events(self) -> AsyncIterator[AnsibleJobEvent]:
-        # HACK: this approach is ass, we can do better
+        # HACK: this approach is a hack, we can do better
         index = 0
         while True:
             # yield any events we haven't yet
