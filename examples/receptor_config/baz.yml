@@ -1,0 +1,15 @@
+---
+- node:
+    id: baz
+
+- tcp-peer:
+    address: baz.example.com:2222
+
+- control-service:
+    service: control
+    filename: /tmp/baz.sock
+
+- work-command:
+    worktype: ansible-runner
+    command: ansible-runner
+    params: worker

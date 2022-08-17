@@ -8,6 +8,7 @@ Welcome to Ansible SDK's documentation
    intro
    install
    troubleshooting
+   scenario_guide
    faq
 
 
