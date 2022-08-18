@@ -1,0 +1,5 @@
+[taskhosts]
+h1
+
+[taskhosts:vars]
+ansible_connection=local
