@@ -5,7 +5,7 @@ on: [pull_request, push]
 jobs:
   sanity:
     name: ${{ matrix.test.name }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       TOXENV: ${{ matrix.test.tox_env }}
 
@@ -34,7 +34,7 @@ jobs:
 
   unit:
     name: Unit - ${{ matrix.py_version.name }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       TOXENV: ${{ matrix.py_version.tox_env }}
 
