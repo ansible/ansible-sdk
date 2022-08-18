@@ -16,6 +16,9 @@ jobs:
           - name: Lint
             tox_env: linters
 
+          - name: Docs
+            tox_env: docs
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
