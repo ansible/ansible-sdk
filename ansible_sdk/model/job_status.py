@@ -48,6 +48,7 @@ class AnsibleJobStatus:
 
     def drop_event(self, evt: AnsibleJobStatusEvent):
         self._events[self._events.index(evt)] = None
+        # FIXME: await self._event_streamer here as well to propagate any exceptions?
 
     @property
     def events(self):
