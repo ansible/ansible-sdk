@@ -23,7 +23,6 @@ from ansible_sdk.model.job_event import (
 class AnsibleJobStatus:
     def __init__(self):
         self._events = []
-        self._complete = False
         self._event_streamer = None
         self._newevent = asyncio.Event()  # fired when a new event arrives to signal awaiting generators to proceed
         self._done = asyncio.Event()  # fired when the job is complete
@@ -65,6 +64,7 @@ class AnsibleJobStatus:
 
     def __await__(self):
         # make the job object itself awaitable for completion
+        # FIXME: await self._event_streamer here as well to propagate any exceptions?
         return self._done.wait().__await__()
 
     @property

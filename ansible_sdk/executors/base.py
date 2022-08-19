@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import abc
 import asyncio
 import json as async_json
 
-from ansible_sdk import AnsibleJobStatus
+from ansible_sdk import AnsibleJobStatus, AnsibleJobDef
 from ansible_sdk._aiocompat.proxy import AsyncProxy
 
 
@@ -11,8 +12,12 @@ from ansible_sdk._aiocompat.proxy import AsyncProxy
 async_json = AsyncProxy(async_json)
 
 
-class AnsibleBaseJobExecutor:
-    async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus):
+class AnsibleBaseJobExecutor(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
+    def _get_runner_args(self, job_def: AnsibleJobDef):
+        pass
+
+    async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:
         try:
             while True:
                 line = await reader.readline()
@@ -53,5 +58,11 @@ class AnsibleBaseJobExecutor:
                     pass
 
         finally:
+            # optional callback for cleanup (eg, delete containers, propagate artifacts, clean up mesh jobs)
+            await self._after_stream_events(job_status=status_obj)
+
             # FIXME: propagate final status, exceptions, etc
             status_obj._done.set()
+
+    async def _after_stream_events(self, job_status: AnsibleJobStatus) -> None:
+        pass

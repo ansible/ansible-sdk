@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import os
 import tempfile
+import typing as t
 
 from ansible_runner import interface as async_runner
 
@@ -16,19 +17,18 @@ from ansible_sdk import AnsibleJobDef, AnsibleJobStatus
 async_runner = AsyncProxy(async_runner)
 
 
-def get_runner_args(job_def: AnsibleJobDef) -> dict[str, object]:
-    args = {
-        'private_data_dir': job_def.data_dir,
-        'playbook': job_def.playbook,
-    }
-
-    return args
-
-
 class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
+    # FIXME: define process control props only on init, no-args init and pass to submit_job, or ?
     def __init__(self):
-        # FIXME: executor type-specific config here
         pass
+
+    def _get_runner_args(self, job_def: AnsibleJobDef) -> dict[str, t.Any]:
+        args = {
+            'private_data_dir': job_def.data_dir,
+            'playbook': job_def.playbook,
+        }
+
+        return args
 
     async def submit_job(self, job_def: AnsibleJobDef) -> AnsibleJobStatus:
         loop = asyncio.get_running_loop()
@@ -45,11 +45,12 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
 
         # FIXME: come up with a less brittle way to manage the pipe lifetime
         # start payload creation first by explicitly creating a task; this will start feeding our pipe now
-        payload_builder = asyncio.create_task(asyncio_write_payload_and_close(payload_writer=payload_writer, **get_runner_args(job_def)))
+        payload_builder = asyncio.create_task(asyncio_write_payload_and_close(payload_writer=payload_writer, **self._get_runner_args(job_def)))
 
         # print('starting worker')
-        runner_args = get_runner_args(job_def)
-        # FIXME: deterministic cleanup
+        runner_args = self._get_runner_args(job_def)
+
+        # FIXME: this prevents pollution of the original datadir for local runs and returned artifacts;
         runner_args['private_data_dir'] = tempfile.mkdtemp()
 
         # by using run_async, we can await
@@ -78,3 +79,28 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
         status_obj._event_streamer = loop.create_task(self._stream_events(reader, status_obj))
 
         return status_obj
+
+
+class _AnsibleContainerJobExecutorBase(AnsibleSubprocessJobExecutor):
+    _container_runtime_exe: str
+    def __init__(self, image_ref: str):
+        super().__init__()
+        self._container_image_ref = image_ref
+
+    def _get_runner_args(self, job_def: AnsibleJobDef):
+        args = super()._get_runner_args(job_def)
+
+        args['container_image'] = self._container_image_ref
+        args['process_isolation'] = True
+        args['process_isolation_executable'] = self._container_runtime_exe
+
+        return args
+
+
+# FIXME: define container control props only on init, no-args init and pass to submit_job, or ?
+class AnsibleDockerJobExecutor(_AnsibleContainerJobExecutorBase):
+    _container_runtime_exe = 'docker'
+
+# FIXME: define container control props only on init, no-args init and pass to submit_job, or ?
+class AnsiblePodmanJobExecutor(_AnsibleContainerJobExecutorBase):
+    _container_runtime_exe = 'podman'

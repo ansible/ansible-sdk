@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from .proxy import AsyncProxy
+from collections.abc import Iterator
 from contextlib import asynccontextmanager
 from receptorctl import ReceptorControl
 
@@ -6,12 +9,12 @@ from receptorctl import ReceptorControl
 class ReceptorControlAsync(ReceptorControl):
     # since the sync init can block on reading config, need an async-friendly factory method to background creation
     @classmethod
-    async def create(cls, *args, **kwargs):
+    async def create(cls, *args, **kwargs) -> ReceptorControlAsync:
         return await AsyncProxy.get_wrapped(ReceptorControlAsync)(*args, **kwargs)
 
     @classmethod
     @asynccontextmanager
-    async def create_ctx(cls, *args, **kwargs):
+    async def create_ctx(cls, *args, **kwargs) -> Iterator[ReceptorControlAsync]:
         rca = await ReceptorControlAsync.create(*args, **kwargs)
         try:
             yield rca
