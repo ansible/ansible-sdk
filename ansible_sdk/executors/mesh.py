@@ -63,8 +63,6 @@ class AnsibleMeshJobExecutor(AnsibleBaseJobExecutor):
                 await payload_builder
                 print('payload builder completed ok')
 
-
-
         result_socket: socket.socket
         sockfile: io.FileIO
 

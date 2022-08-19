@@ -81,6 +81,7 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
 
 class _AnsibleContainerJobExecutorBase(AnsibleSubprocessJobExecutor):
     _container_runtime_exe: str
+
     def __init__(self, image_ref: str):
         super().__init__()
         self._container_image_ref = image_ref
@@ -98,6 +99,7 @@ class _AnsibleContainerJobExecutorBase(AnsibleSubprocessJobExecutor):
 # FIXME: define container control props only on init, no-args init and pass to submit_job, or ?
 class AnsibleDockerJobExecutor(_AnsibleContainerJobExecutorBase):
     _container_runtime_exe = 'docker'
+
 
 # FIXME: define container control props only on init, no-args init and pass to submit_job, or ?
 class AnsiblePodmanJobExecutor(_AnsibleContainerJobExecutorBase):
