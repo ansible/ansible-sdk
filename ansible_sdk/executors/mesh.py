@@ -9,7 +9,7 @@ import types
 from ansible_sdk._aiocompat.receptorctl_async import ReceptorControlAsync
 from ansible_sdk._aiocompat.runner_async import asyncio_write_payload_and_close
 from ansible_sdk.executors import AnsibleBaseJobExecutor
-from ansible_sdk.executors.subprocess import get_runner_args
+from ansible_sdk.executors.Subprocess.subprocess import get_runner_args
 from ansible_sdk import AnsibleJobDef, AnsibleJobStatus
 
 

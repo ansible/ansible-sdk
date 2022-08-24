@@ -26,9 +26,8 @@ def get_runner_args(job_def: AnsibleJobDef) -> dict[str, object]:
 
 
 class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
-    def __init__(self):
-        # FIXME: executor type-specific config here
-        pass
+    def __init__(self, options):
+        self.options = options
 
     async def submit_job(self, job_def: AnsibleJobDef) -> AnsibleJobStatus:
         loop = asyncio.get_running_loop()
