@@ -16,7 +16,7 @@ async def main():
 
     # consume events as they arrive
     eventcount = 0
-    async for ev in job_status.events:
+    async for ev in job_status:
         eventcount += 1
         print(f'*** consumed event {ev}')
         # if 'stdout' in ev:
@@ -38,7 +38,7 @@ async def main():
     await job_status
 
     print(f'job done? {job_status.done}')
-    print(f'event count: {len(job_status._events)}')
+    print(f'event count: {job_status.event_count}')
 
     print('all done, exiting')
 
