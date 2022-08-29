@@ -9,14 +9,14 @@ from ansible_runner import interface as async_runner
 from ansible_sdk._aiocompat.proxy import AsyncProxy
 from ansible_sdk._aiocompat.runner_async import asyncio_write_payload_and_close
 from ansible_sdk.executors import AnsibleBaseJobExecutor
-from ansible_sdk import AnsibleJobDef, AnsibleJobStatus
+from ansible_sdk import AnsibleJob, AnsibleJobStatus
 
 
 # wrap these modules in an AsyncProxy so they're asyncio-friendly
 async_runner = AsyncProxy(async_runner)
 
 
-def get_runner_args(job_def: AnsibleJobDef) -> dict[str, object]:
+def get_runner_args(job_def: AnsibleJob) -> dict[str, object]:
     args = {
         'private_data_dir': job_def.data_dir,
         'playbook': job_def.playbook,
@@ -30,7 +30,7 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
         # FIXME: executor type-specific config here
         pass
 
-    async def submit_job(self, job_def: AnsibleJobDef) -> AnsibleJobStatus:
+    async def submit_job(self, job_def: AnsibleJob) -> AnsibleJobStatus:
         loop = asyncio.get_running_loop()
 
         fds = os.pipe()

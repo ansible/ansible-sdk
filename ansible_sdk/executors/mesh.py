@@ -10,7 +10,7 @@ from ansible_sdk._aiocompat.receptorctl_async import ReceptorControlAsync
 from ansible_sdk._aiocompat.runner_async import asyncio_write_payload_and_close
 from ansible_sdk.executors import AnsibleBaseJobExecutor
 from ansible_sdk.executors.subprocess import get_runner_args
-from ansible_sdk import AnsibleJobDef, AnsibleJobStatus
+from ansible_sdk import AnsibleJob, AnsibleJobStatus
 
 
 class AnsibleMeshJobExecutor(AnsibleBaseJobExecutor):
@@ -19,7 +19,7 @@ class AnsibleMeshJobExecutor(AnsibleBaseJobExecutor):
         self._socketpath = local_socket_path
         self._node = node
 
-    async def submit_job(self, job_def: AnsibleJobDef) -> AnsibleJobStatus:
+    async def submit_job(self, job_def: AnsibleJob) -> AnsibleJobStatus:
         loop = asyncio.get_running_loop()
         fds = os.pipe()
         with os.fdopen(fds[0], 'rb') as payload_reader, os.fdopen(fds[1], 'wb') as payload_writer:
