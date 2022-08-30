@@ -1,3 +1,6 @@
+ansible-core==2.13.3
+ansible-runner==2.2.1
+receptorctl==1.2.3
 flake8
 pytest
 pytest-xdist
