@@ -61,7 +61,9 @@ class AnsibleJobStatus:
                 return
 
             # chill, let either done or newevent wake us up
-            await asyncio.wait([self._newevent.wait(), self._done.wait()], return_when=asyncio.FIRST_COMPLETED)
+            newevent_task = asyncio.create_task(self._newevent.wait())
+            done_task = asyncio.create_task(self._done.wait())
+            await asyncio.wait([newevent_task, done_task], return_when=asyncio.FIRST_COMPLETED)
 
     def __await__(self):
         # make the job object itself awaitable for completion
