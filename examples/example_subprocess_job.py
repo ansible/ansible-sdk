@@ -1,13 +1,13 @@
 
 import asyncio
 
-from ansible_sdk import AnsibleJobDef
+from ansible_sdk import AnsibleJob
 from ansible_sdk.executors import AnsibleSubprocessJobExecutor
 
 
 async def main():
     executor = AnsibleSubprocessJobExecutor()
-    jobdef = AnsibleJobDef('datadir', 'pb.yml')
+    jobdef = AnsibleJob('datadir', 'pb.yml')
 
     job_status = await executor.submit_job(jobdef)
 
