@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from dataclasses import dataclass
 import io
 import os
 import socket
@@ -13,11 +14,26 @@ from ansible_sdk.executors.subprocess import get_runner_args
 from ansible_sdk import AnsibleJobDef, AnsibleJobStatus
 
 
+@dataclass
 class AnsibleMeshJobExecutor(AnsibleBaseJobExecutor):
-    def __init__(self, local_socket_path: str, node: types.Optional[str] = None):
-        # DECISION: define mesh access props only on init?
-        self._socketpath = local_socket_path
-        self._node = node
+    """Executor for processing Ansible Mesh Jobs
+
+    Args:
+        local_socket_path (str): Path to control socket address to connect to Receptor
+        node (str): Name of the node
+
+    Returns:
+        AnsibleJobStatus: Ansible Job Status Object
+
+    Usage::
+        >>> from ansible_sdk.executors import AnsibleMeshJobExecutor
+        >>> executor = AnsibleMeshJobExecutor(local_socket_path='/tmp/bar.sock', node='baz')
+        ...
+        >>> job_status = await executor.submit_job(jobdef)
+
+    """
+    local_socket_path: str
+    node: types.Optional[str] = None
 
     async def submit_job(self, job_def: AnsibleJobDef) -> AnsibleJobStatus:
         loop = asyncio.get_running_loop()

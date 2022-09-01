@@ -4,6 +4,8 @@ import asyncio
 import os
 import tempfile
 
+from dataclasses import dataclass
+
 from ansible_runner import interface as async_runner
 
 from ansible_sdk._aiocompat.proxy import AsyncProxy
@@ -25,12 +27,26 @@ def get_runner_args(job_def: AnsibleJobDef) -> dict[str, object]:
     return args
 
 
+@dataclass
 class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
-    def __init__(self):
-        # FIXME: executor type-specific config here
-        pass
+    """Executor for processing Ansible Subprocess Jobs
+
+    Usage::
+        >>> from ansible_sdk.executors import AnsibleSubprocessJobExecutor
+        >>> executor = AnsibleSubprocessJobExecutor()
+        ...
+        >>> job_status = await executor.submit_job(jobdef)
+    """
 
     async def submit_job(self, job_def: AnsibleJobDef) -> AnsibleJobStatus:
+        """Submits Ansible Job as per Ansible Job definitions
+
+        Args:
+            job_def (AnsibleJobDef): Ansible Job Definition
+
+        Returns:
+            AnsibleJobStatus: Ansible Job Status Object
+        """
         loop = asyncio.get_running_loop()
 
         fds = os.pipe()

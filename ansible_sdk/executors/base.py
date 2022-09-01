@@ -12,6 +12,8 @@ async_json = AsyncProxy(async_json)
 
 
 class AnsibleBaseJobExecutor:
+    """The built-in Job Executor for Ansible SDK
+    """
     async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus):
         try:
             while True:
