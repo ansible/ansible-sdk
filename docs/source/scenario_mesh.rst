@@ -1,85 +1,102 @@
-************************************
-Executing Mesh Job using Ansible SDK
-************************************
+****************************
+Running automation mesh jobs
+****************************
 
-.. contents::
-   :local:
+Automation mesh is a scalable cluster of Receptor nodes that execute Ansible playbooks.
+Ansible SDK lets you invoke jobs directly on nodes in the automation mesh.
 
-Introduction
-============
+Prerequisites
+=============
 
-This guide will show you how to utilize Ansible SDK to invoke jobs using `Receptor <https://github.com/ansible/receptor>`_.
+* Install Ansible SDK and requirements, including Ansible and Ansible Runner.
+* Install `Receptor <https://github.com/ansible/receptor>`_.
+* Install `Receptorctl <https://receptor.readthedocs.io/en/latest/index.html#installation>`_.
 
-Scenario requirements
-=====================
+Setting up a local automation mesh
+==================================
 
-* Software
+Create a locally running cluster of Receptor nodes with configuration files in the ``examples/receptor_config`` directory:
 
-    * `Receptor <https://github.com/ansible/receptor>`_
+#. Open your ``/etc/hosts`` file for editing.
+#. Add the following entries to your ``hosts`` file:
 
-    * `Receptorctl <https://receptor.readthedocs.io/en/latest/index.html#installation>`_
+   .. code-block::
 
-* Hardware
+      127.0.0.1 foo.example.com
+      127.0.0.1 bar.example.com
+      127.0.0.1 baz.example.com
 
-    * N/A
+#. Open a terminal and start the first Receptor node.
+   
+   a. Activate your virtual environment for Ansible SDK.
 
-* Access / Credentials
+      .. code-block:: bash
 
-    * N/A
+         $ source env/bin/activate
 
+   b. Start a node with the ``foo.yml`` configuration.
 
-Caveats
-=======
+      .. code-block:: bash
 
-- N/A
+         $ receptor --config foo.yml
 
-Example description
-===================
+#. Open a new terminal and start the second Receptor node.
+   
+   a. Activate your virtual environment for Ansible SDK.
+   b. Start a node with the ``bar.yml`` configuration.
 
-In order to run this example, we are assuming that you have only one machine running Ansible, Ansible Runner and Receptor
+      .. code-block:: bash
 
-* Start three nodes using the configuration files found in ``examples/receptor_config`` directory.
-  Use individual terminals for each nodes
+         $ receptor --config bar.yml
 
-.. code-block:: bash
+#. Open a new terminal and start the third Receptor node.
+   
+   a. Activate your virtual environment for Ansible SDK.
+   b. Start a node with the ``baz.yml`` configuration.
 
-    # (from the first terminal)
-    $ receptor --config foo.yml 
+      .. code-block:: bash
+
+         $ receptor --config baz.yml
+
+#. Verify that the automation mesh is running.
     
+   .. code-block:: bash
+
+      $ receptorctl --socket /tmp/bar.sock status
+
+Invoking automation mesh jobs
+=============================
+
+Use Ansible SDK to run a playbook on automation mesh as follows:
+
+#. Open a terminal and change to the ``examples`` directory.
+#. Run the following command:
+
+   .. code-block:: bash
+
+      $ python example_mesh_job.py 
+
+The ``example_mesh_job.py`` program has a main method that connects to the Receptor nodes and runs the ``examples/datadir/project/pb.yml`` playbook.
+You can verify the job is successful when Ansible SDK prints the following to stdout:
+
 .. code-block:: bash
 
-    # (from the second terminal)
-    $ receptor --config bar.yml 
-    
-.. code-block:: bash
-
-    # (from the third terminal)
-    $ receptor --config baz.yml 
-
-* Check if all the nodes are up and running using ``receptorctl`` command - 
-    
-.. code-block:: bash
-
-    # (from the fourth terminal)
-    $ receptorctl --socket /tmp/bar.sock status
-
-* Let us invoke ``examples/example_mesh_job.py`` - 
-
-.. code-block:: bash
-
-    # (from the fifth terminal)
-    $ python example_mesh_job.py 
-
-What to expect
---------------
-
-Ansible SDK will use underlying receptor to invoke job and present the output to the stdout
+   submitting work
+   work submitted
+   payload builder completed ok
+   getting results
+   got results
+   waiting for jobs
+   job done: True, has <x> events
 
 Troubleshooting
----------------
+===============
 
-If your something fails:
+If you encounter issues with this scenario, troubleshoot as follows:
 
-- Check if receptor is installed correctly
-- Check if receptorctl is installed correctly
-- Check if Ansible SDK is installed correctly 
+- Check your Ansible SDK installation. See :ref:`install_ansible_sdk`.
+- Ensure you installed Ansible and Ansible Runner.
+- Ensure Receptor is installed correctly.
+- Ensure ``receptorctl`` is installed correctly.
+- Ensure your ``/etc/hosts`` file contains entries for each local Receptor node.
+- Ensure you run each Receptor node in a separate terminal in the Ansible SDK virtual environment.

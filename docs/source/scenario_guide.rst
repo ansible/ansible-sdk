@@ -2,7 +2,7 @@
 Scenario Guides
 ***************
 
-These scenarios teach you how to accomplish common Ansible SDK tasks. To get started, please select the task you want to accomplish.
+Scenarios show you how to perform common Ansible SDK tasks.
 
 .. toctree::
    :maxdepth: 1
