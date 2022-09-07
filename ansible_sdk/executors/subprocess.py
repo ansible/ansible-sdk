@@ -31,6 +31,15 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
         pass
 
     async def submit_job(self, job_def: AnsibleJobDef) -> AnsibleJobStatus:
+        '''
+        Submit Ansible Job asynchronously
+
+        Args:
+            job_def (AnsibleJobDef): Ansible Job Definition Object
+
+        Returns:
+            AnsibleJobStatus: If the Job is completed
+        '''
         loop = asyncio.get_running_loop()
 
         fds = os.pipe()

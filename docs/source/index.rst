@@ -7,6 +7,7 @@ Welcome to Ansible SDK's documentation
 
    intro
    install
+   develop
    troubleshooting
    faq
 
