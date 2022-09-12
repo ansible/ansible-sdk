@@ -1,0 +1,10 @@
+---
+- node:
+    id: foo
+
+- tcp-listener:
+    port: 2222
+
+- control-service:
+    service: control
+    filename: /tmp/foo.sock

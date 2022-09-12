@@ -1,0 +1,13 @@
+---
+- node:
+    id: bar
+
+- log-level:
+    level: Debug
+
+- tcp-peer:
+    address: bar.example.com:2222
+
+- control-service:
+    service: control
+    filename: /tmp/bar.sock
