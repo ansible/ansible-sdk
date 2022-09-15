@@ -1,0 +1,14 @@
+
+
+==  FAQ
+
+
+
+===  Installation
+
+
+
+====  How to install Ansible SDK ?
+
+
+Please refer installation guide xref:install-ansible-sdk[here]
