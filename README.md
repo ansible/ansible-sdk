@@ -15,9 +15,17 @@ TBD
 
 TBD
 
+## Documentation 
+
+Build single-page HTML from source as follows:
+
+```
+$ asciidoctor docs/ansible_sdk.asciidoc
+```
+
 ## Installation
 
-You can follow the installation guide specified in [`docs`](https://github.com/ansible/ansible-sdk/tree/main/docs/source/install.rst).
+Follow instructions in [`installing_sdk.adoc`](https://github.com/ansible/ansible-sdk/tree/main/docs/installing_sdk.adoc).
 
 ### Required Python libraries and SDKs
 
@@ -27,7 +35,6 @@ The Ansible-SDK depends on Python 3.8+, Ansible Core, Ansible Runner and other t
 * [`asyncio`](https://docs.python.org/3/library/asyncio.html)
 * [`ansible-runner`](https://ansible-runner.readthedocs.io/en/stable/install/)
 * [`receptorctl`](https://receptor.readthedocs.io/en/latest/#installation)
-
 
 ## Testing and Development
 

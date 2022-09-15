@@ -1,0 +1,4 @@
+[id="ansible-sdk-scenarios"]
+= {sdk-name} scenario guides
+
+{sdk-name} scenario guides provide step-by-step instructions for performing common tasks.

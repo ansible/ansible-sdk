@@ -1,0 +1,57 @@
+[id="installing-ansible-sdk"]
+= Installing {sdk-name}
+
+You can install {sdk-name} from source with a Python3 virtual environment or as a pip package.
+Additional installation methods will be available soon.
+
+== {sdk-name} requirements 
+
+{sdk-name} requires the following Python version and packages:
+
+* Python version 3.8 or later.
+* link:https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html[`ansible-core`]
+* link:https://docs.python.org/3/library/asyncio.html[`asyncio`]
+* link:https://ansible-runner.readthedocs.io/en/stable/install/[`ansible-runner`]
+* link:https://receptor.readthedocs.io/en/latest/#installation[`receptorctl`]
+
+== Installing {sdk-name} from source
+
+. Clone the source code repository.
++
+[source,default,sub="attributes"]
+----
+$ git clone git://github.com/ansible/ansible-sdk
+----
+
+. Open a terminal in the root directory.
++
+[source,default,sub="attributes"]
+----
+$ cd ansible-sdk
+----
+
+. Do one of the following:
++
+* Create and activate a Python3 virtual environment.
++
+[source,default,sub="attributes"]
+----
+$ virtualenv env
+$ source env/bin/activate
+----
++ 
+* Install {sdk-name} with pip.
++
+[source,default,sub="attributes"]
+----
+$ pip install -e .
+----
+
+== Installing {sdk-name} releases
+
+. Download the link:++https://github.com/ansible/ansible-sdk/releases++[latest {sdk-name} release].
+. TBD
+
+== Building the RPM
+
+TBD

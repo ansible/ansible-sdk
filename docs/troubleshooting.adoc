@@ -1,4 +1,4 @@
+[id="troubleshooting-ansible-sdk"]
+=  Troubleshooting {sdk-name}
 
-
-==  Troubleshooting
-
+Get help debugging and resolving common issues with {sdk-name}.
