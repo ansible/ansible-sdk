@@ -20,7 +20,7 @@ TBD
 Build single-page HTML from source as follows:
 
 ```
-$ asciidoctor docs/ansible_sdk.asciidoc
+$ asciidoc documentation/ansible_sdk.asciidoc
 ```
 
 ## Installation
