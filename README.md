@@ -17,11 +17,23 @@ TBD
 
 ## Documentation 
 
+Install asciidoctor.
+
+```
+$ sudo dnf install -y asciidoctor
+```
+
+More installation options available at [installing asciidoctor](https://docs.asciidoctor.org/asciidoctor/latest/install/).
+
 Build single-page HTML from source as follows:
 
 ```
-$ asciidoc documentation/ansible_sdk.asciidoc
+$ asciidoctor documentation/ansible_sdk.asciidoc
 ```
+
+Note: During the CI checks tox uses `asciidoc` to generate HTML instead of `asciidoctor`.
+It is a basic error check and triggers warnings because there is currently no asciidoc configuration file.
+You can safely ignore those warnings.
 
 ## Installation
 
