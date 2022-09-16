@@ -1,1 +1,1 @@
-asciidoc3==3.2.3
+asciidoc==10.2.0
