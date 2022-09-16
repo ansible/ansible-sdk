@@ -8,12 +8,12 @@
 include::attributes/ansible_sdk_attributes.adoc[]
 
 [id="ansible-sdk"]
-= Automating with {sdk-name}
+= Automation with {sdk-name}
+
+Automate with Ansible directly from your applications.
 
 [preface]
 == {sdk-name}
-Harness the power and simplicity of Ansible automation directly from your applications with {sdk-name}.
-
 {sdk-name} is a lightweight Python library that allows you to dispatch and monitor Ansible tasks, roles, and playbooks.
 Ansible content execution can occur in any combination of local or remote subprocesses, with or without containerization.
 
