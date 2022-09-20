@@ -7,22 +7,23 @@ import typing as t
 
 from ansible_runner import interface as async_runner
 
-from ansible_sdk._aiocompat.proxy import AsyncProxy
-from ansible_sdk._aiocompat.runner_async import asyncio_write_payload_and_close
-from ansible_sdk.executors import AnsibleBaseJobExecutor
-from ansible_sdk import AnsibleJobDef, AnsibleJobStatus
-
+from .._aiocompat.proxy import AsyncProxy
+from .._aiocompat.runner_async import asyncio_write_payload_and_close
+from ..executors.base import AnsibleJobExecutorBase, AnsibleJobExecutorOptionsBase
+from .._util import dataclass_compat as dataclasses
+from .. import AnsibleJobDef, AnsibleJobStatus
 
 # wrap these modules in an AsyncProxy so they're asyncio-friendly
 async_runner = AsyncProxy(async_runner)
 
 
-class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
-    # FIXME: define process control props only on init, no-args init and pass to submit_job, or ?
-    def __init__(self):
-        pass
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class AnsibleSubprocessJobOptions(AnsibleJobExecutorOptionsBase):
+    pass
 
-    def _get_runner_args(self, job_def: AnsibleJobDef) -> dict[str, t.Any]:
+
+class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
+    def _get_runner_args(self, job_def: AnsibleJobDef, options: AnsibleSubprocessJobOptions) -> dict[str, t.Any]:
         args = {
             'private_data_dir': job_def.data_dir,
             'playbook': job_def.playbook,
@@ -30,7 +31,7 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
 
         return args
 
-    async def submit_job(self, job_def: AnsibleJobDef) -> AnsibleJobStatus:
+    async def submit_job(self, job_def: AnsibleJobDef, options: AnsibleSubprocessJobOptions) -> AnsibleJobStatus:
         loop = asyncio.get_running_loop()
 
         fds = os.pipe()
@@ -45,10 +46,10 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
 
         # FIXME: come up with a less brittle way to manage the pipe lifetime
         # start payload creation first by explicitly creating a task; this will start feeding our pipe now
-        payload_builder = asyncio.create_task(asyncio_write_payload_and_close(payload_writer=payload_writer, **self._get_runner_args(job_def)))
+        payload_builder = asyncio.create_task(asyncio_write_payload_and_close(payload_writer=payload_writer, **self._get_runner_args(job_def, options)))
 
         # print('starting worker')
-        runner_args = self._get_runner_args(job_def)
+        runner_args = self._get_runner_args(job_def, options)
 
         # FIXME: this prevents pollution of the original datadir for local runs and returned artifacts;
         runner_args['private_data_dir'] = tempfile.mkdtemp()
@@ -76,31 +77,45 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
 
         status_obj = AnsibleJobStatus()
         status_obj._stream_task = loop.create_task(self._stream_events(reader, status_obj))
+        status_obj._executor_options = options
         return status_obj
 
 
-class _AnsibleContainerJobExecutorBase(AnsibleSubprocessJobExecutor):
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class _AnsibleContainerJobOptions(AnsibleJobExecutorOptionsBase):
+    container_image_ref: str
+
+
+OptionsT = t.TypeVar("OptionsT", bound=_AnsibleContainerJobOptions)
+
+
+class _AnsibleContainerJobExecutorBase(AnsibleSubprocessJobExecutor, t.Generic[OptionsT]):
     _container_runtime_exe: str
 
-    def __init__(self, image_ref: str):
-        super().__init__()
-        self._container_image_ref = image_ref
+    def _get_runner_args(self, job_def: AnsibleJobDef, options: _AnsibleContainerJobOptions):
+        args = super()._get_runner_args(job_def, AnsibleSubprocessJobOptions())
 
-    def _get_runner_args(self, job_def: AnsibleJobDef):
-        args = super()._get_runner_args(job_def)
-
-        args['container_image'] = self._container_image_ref
+        args['container_image'] = options.container_image_ref
         args['process_isolation'] = True
         args['process_isolation_executable'] = self._container_runtime_exe
 
         return args
 
+    async def submit_job(self, job_def: AnsibleJobDef, options: OptionsT) -> AnsibleJobStatus:
+        return await super().submit_job(job_def, options)
 
-# FIXME: define container control props only on init, no-args init and pass to submit_job, or ?
-class AnsibleDockerJobExecutor(_AnsibleContainerJobExecutorBase):
+
+class AnsibleDockerJobOptions(_AnsibleContainerJobOptions):
+    pass
+
+
+class AnsibleDockerJobExecutor(_AnsibleContainerJobExecutorBase[AnsibleDockerJobOptions]):
     _container_runtime_exe = 'docker'
 
 
-# FIXME: define container control props only on init, no-args init and pass to submit_job, or ?
-class AnsiblePodmanJobExecutor(_AnsibleContainerJobExecutorBase):
+class AnsiblePodmanJobOptions(_AnsibleContainerJobOptions):
+    pass
+
+
+class AnsiblePodmanJobExecutor(_AnsibleContainerJobExecutorBase[AnsiblePodmanJobOptions]):
     _container_runtime_exe = 'podman'

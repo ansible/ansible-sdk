@@ -2,14 +2,14 @@
 import asyncio
 
 from ansible_sdk import AnsibleJobDef
-from ansible_sdk.executors import AnsibleSubprocessJobExecutor
+from ansible_sdk.executors import AnsibleSubprocessJobExecutor, AnsibleSubprocessJobOptions
 
 
 async def main():
     executor = AnsibleSubprocessJobExecutor()
     jobdef = AnsibleJobDef('datadir', 'pb.yml')
 
-    job_status = await executor.submit_job(jobdef)
+    job_status = await executor.submit_job(jobdef, AnsibleSubprocessJobOptions())
 
     # consume events and accumulate stdout replica
     stdout = ''

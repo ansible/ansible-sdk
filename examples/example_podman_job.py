@@ -2,14 +2,15 @@
 import asyncio
 
 from ansible_sdk import AnsibleJobDef
-from ansible_sdk.executors import AnsiblePodmanJobExecutor
+from ansible_sdk.executors import AnsiblePodmanJobExecutor, AnsiblePodmanJobOptions
 
 
 async def main():
-    executor = AnsiblePodmanJobExecutor(image_ref='quay.io/ansible/ansible-runner:devel')
+    executor = AnsiblePodmanJobExecutor()
     jobdef = AnsibleJobDef('datadir', 'pb.yml')
+    options = AnsiblePodmanJobOptions(image_ref='quay.io/ansible/ansible-runner:devel')
 
-    job_status = await executor.submit_job(jobdef)
+    job_status = await executor.submit_job(jobdef, options)
 
     # consume events and accumulate stdout replica
     stdout = ''

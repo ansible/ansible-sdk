@@ -12,9 +12,13 @@ from ansible_sdk._aiocompat.proxy import AsyncProxy
 async_json = AsyncProxy(async_json)
 
 
-class AnsibleBaseJobExecutor(metaclass=abc.ABCMeta):
+class AnsibleJobExecutorOptionsBase:
+    pass
+
+
+class AnsibleJobExecutorBase(abc.ABC):
     @abc.abstractmethod
-    def _get_runner_args(self, job_def: AnsibleJobDef):
+    async def submit_job(self, job_def: AnsibleJobDef, options: AnsibleJobExecutorOptionsBase) -> AnsibleJobStatus:
         pass
 
     async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:

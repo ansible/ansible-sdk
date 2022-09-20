@@ -34,6 +34,7 @@ class AnsibleJobStatus:
         self._events = []
         self._events_appended = asyncio.Event()
         self._stream_task = None
+        self._executor_options = None
 
     async def add_event(self, evt: AnsibleJobStatusEvent):
         self._events.append(evt)

@@ -2,14 +2,15 @@
 import asyncio
 
 from ansible_sdk import AnsibleJobDef
-from ansible_sdk.executors import AnsibleDockerJobExecutor
+from ansible_sdk.executors import AnsibleDockerJobExecutor, AnsibleDockerJobOptions
 
 
 async def main():
-    executor = AnsibleDockerJobExecutor(image_ref='quay.io/ansible/ansible-runner:devel')
+    executor = AnsibleDockerJobExecutor()
     jobdef = AnsibleJobDef('datadir', 'pb.yml')
+    options = AnsibleDockerJobOptions(image_ref='quay.io/ansible/ansible-runner:devel')
 
-    job_status = await executor.submit_job(jobdef)
+    job_status = await executor.submit_job(jobdef, options)
 
     # consume events and accumulate stdout replica
     stdout = ''
