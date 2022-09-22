@@ -10,6 +10,7 @@ Ansible SDK is a toolkit that lets you harness the power and simplicity of Ansib
 
    intro
    install
+   getting_started
    scenario_guide
    troubleshooting
    faq
