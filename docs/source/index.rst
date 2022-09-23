@@ -1,8 +1,7 @@
 Ansible SDK documentation
 =========================
 
-Welcome to the Ansible SDK documentation.
-Ansible SDK is a toolkit that lets you harness the power and simplicity of Ansible automation directly from your applications.
+Automate with Ansible directly from your applications.
 
 .. toctree::
    :maxdepth: 1
@@ -10,8 +9,7 @@ Ansible SDK is a toolkit that lets you harness the power and simplicity of Ansib
 
    intro
    install
-   getting_started
-   scenario_guide
+   quickstart_guides
    troubleshooting
    faq
 

@@ -1,0 +1,53 @@
+.. _quickstart_get_started:
+
+********************************
+Getting started with Ansible SDK
+********************************
+
+Ansible SDK lets you run jobs from your Python project with these two objects:
+
+* ``AnsibleJobDef`` defines Ansible jobs.
+* ``JobExecutor`` runs Ansible jobs.
+
+Prerequisites
+=============
+
+* Install Ansible SDK and required software.
+
+Running Ansible jobs
+====================
+
+#. Open a terminal and change to the ``examples`` directory.
+#. Open the ``example_subprocess_job.py`` file with any editor.
+
+   .. code-block:: python
+       
+      #Imports Ansible SDK modules.
+      from ansible_sdk import AnsibleJobDef
+      from ansible_sdk.executors import AnsibleSubprocessJobExecutor
+
+      ...
+
+      #Declares the job executor to use.
+      executor = AnsibleSubprocessJobExecutor()
+
+      #Configures the job definition.
+      jobdef = AnsibleJobDef('datadir', 'pb.yml')
+      #Runs the job with the executor.
+      job_status = await executor.submit_job(jobdef) 
+
+#. Run the example program as follows:
+
+   .. code-block:: bash
+
+      $ python example_subprocess_job.py
+
+The ``example_subprocess_job.py`` program has a ``main()`` function executes the ``examples/datadir/project/pb.yml`` playbook.
+You can verify the job is successful when Ansible SDK prints the following to stdout:
+
+   .. code-block:: bash
+
+      directly awaiting the job status...
+      job done? True
+      event count: 36
+      all done, exiting
