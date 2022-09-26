@@ -35,7 +35,7 @@ Installing Ansible SDK
        $ virtualenv env
        $ source env/bin/activate
 
-#. Install the required software in your virtual environment.
+#. Install the required Python packages in your virtual environment.
 
    .. code-block:: bash
 
