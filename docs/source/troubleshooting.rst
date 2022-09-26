@@ -15,7 +15,7 @@ Ansible SDK requires Ansible Runner to execute content.
 
 #. Check that Ansible Runner is installed in your virtual environment.
 
-  $ ls env/bin 
+  $ pip list | grep ansible_runner
 
 #. Install Ansible Runner if necessary.
 
