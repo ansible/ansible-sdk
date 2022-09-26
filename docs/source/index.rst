@@ -1,7 +1,7 @@
 Ansible SDK documentation
 =========================
 
-Automate with Ansible directly from your applications.
+Ansible SDK is a toolkit that lets you harness the power and simplicity of Ansible automation directly from your applications.
 
 .. toctree::
    :maxdepth: 1
