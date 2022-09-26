@@ -9,7 +9,8 @@ Automate with Ansible directly from your applications.
 
    intro
    install
-   quickstart_guides
+   running_ansible_jobs
+   running_mesh_jobs
    troubleshooting
    faq
 

@@ -1,13 +1,14 @@
-.. _quickstart_get_started:
+.. _running_ansible_jobs:
 
-********************************
-Getting started with Ansible SDK
-********************************
+********************
+Running Ansible jobs
+********************
 
-Ansible SDK lets you run jobs from your Python project with these two objects:
+Ansible jobs execute playbooks against an inventory.
+Ansible SDK provides the following objects to invoke Ansible jobs directly from your project:
 
-* ``AnsibleJobDef`` defines Ansible jobs.
-* ``JobExecutor`` runs Ansible jobs.
+* ``AnsibleJobDef`` defines jobs.
+* ``JobExecutor`` runs jobs.
 
 Prerequisites
 =============
