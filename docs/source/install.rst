@@ -1,4 +1,4 @@
-.. _install:
+.. _install_ansible_sdk:
 
 Installing Ansible SDK
 ======================

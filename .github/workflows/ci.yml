@@ -69,3 +69,41 @@ jobs:
 
       - name: Run tests
         run: tox
+
+  integration:
+    name: Integration - ${{ matrix.py_version.name }}
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: ${{ matrix.py_version.tox_env }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        py_version:
+          - name: '3.10'
+            tox_env: integration-py310
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install receptor
+        run: podman pull quay.io/ansible/receptor:v1.2.3
+
+      - name: List container images
+        run: podman images
+
+      - name: Run receptor container - port 7323, socket /tmp/receptor.sock
+        run: podman run --rm --name receptor -p 7323:7323 -v /tmp:/tmp -d quay.io/ansible/receptor:v1.2.3
+
+      - name: Install tox
+        run: sudo pip install tox
+
+      - name: Create tox environment
+        run: tox --notest
+
+      - name: Check receptor status
+        run: podman exec receptor receptorctl status
+
+      - name: Run tests
+        run: tox

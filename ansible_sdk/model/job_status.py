@@ -49,4 +49,3 @@ class AnsibleJobStatus:
     @property
     def events(self):
         return _JobStatusIterator(self)
-
