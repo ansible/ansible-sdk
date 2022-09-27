@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from datetime import datetime
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-class AnsibleJobStatusEvent(dict):
+
+@dataclass
+class AnsibleJobStatusEvent:
     uuid: str
     parent_uuid: str
     counter: int

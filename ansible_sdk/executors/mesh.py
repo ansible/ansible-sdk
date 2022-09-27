@@ -66,5 +66,5 @@ class AnsibleMeshJobExecutor(AnsibleBaseJobExecutor):
         await loop.connect_accepted_socket(lambda: protocol, result_socket)
 
         status_obj = AnsibleJobStatus()
-        status_obj.stream_task = loop.create_task(self._stream_events(reader, status_obj))
+        status_obj._stream_task = loop.create_task(self._stream_events(reader, status_obj))
         return status_obj

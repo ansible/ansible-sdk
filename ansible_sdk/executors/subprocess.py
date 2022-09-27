@@ -74,5 +74,5 @@ class AnsibleSubprocessJobExecutor(AnsibleBaseJobExecutor):
         await loop.connect_read_pipe(lambda: protocol, results_reader)
 
         status_obj = AnsibleJobStatus()
-        status_obj.stream_task = loop.create_task(self._stream_events(reader, status_obj))
+        status_obj._stream_task = loop.create_task(self._stream_events(reader, status_obj))
         return status_obj

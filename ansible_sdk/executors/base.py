@@ -26,7 +26,7 @@ class AnsibleBaseJobExecutor:
 
             if 'event' in data:
                 # print(f'appending event of type {data["event"]}')
-                status_obj.add_event(data)
+                await status_obj.add_event(data)
             elif 'zipfile' in data:
                 # print(f'zipfile coming, {data["zipfile"]} bytes expected')
                 zf = await reader.readline()

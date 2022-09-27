@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from .job_event import AnsibleJobStatusEvent
 
 
 class _JobStatusIterator:
@@ -8,20 +9,20 @@ class _JobStatusIterator:
         self._parent = parent
         self._current = 0
 
-    def __iter__(self) -> _JobStatusIterator:
+    def __aiter__(self) -> _JobStatusIterator:
         return self
 
-    async def __next__(self) -> AnsibleJobStatusEvent:
+    async def __anext__(self) -> AnsibleJobStatusEvent:
         while True:
-            if len(self.parent._events) <= self.current:
-                await asyncio.wait([self.parent._newevent, self.parent.stream_task], return_when=asyncio.FIRST_COMPLETED)
+            if len(self._parent._events) <= self._current:
+                await asyncio.wait([asyncio.create_task(self._parent._events_appended.wait()), self._parent._stream_task], return_when=asyncio.FIRST_COMPLETED)
 
-            if self.parent._stream_task.done():
-                self.parent._stream_task.result()
+            if self._parent._stream_task.done():
+                self._parent._stream_task.result()
 
-                raise StopIteration()
+                raise StopAsyncIteration()
 
-            evt = self._events[self._current]
+            evt = self._parent._events[self._current]
             self._current += 1
             if evt:
                 return evt
@@ -38,7 +39,7 @@ class AnsibleJobStatus:
         self._events_appended.set()
         self._events_appended.clear()
 
-    def stream_task_result(self):
+    async def stream_task_result(self):
         await self._stream_task
 
         return self._stream_task.result()
