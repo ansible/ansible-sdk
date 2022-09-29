@@ -16,7 +16,7 @@ async def main():
 
     # consume events as they arrive
     eventcount = 0
-    async for ev in job_status:
+    async for ev in job_status.events:
         eventcount += 1
         print(f'*** consumed event {ev}')
         # if 'stdout' in ev:
@@ -35,7 +35,7 @@ async def main():
 
     # directly await the job object
     print('*** directly awaiting the job status...')
-    await job_status.stream_task_result()
+    job_status.stream_task_result
 
     print(f'job done? {job_status.done}')
     print(f'event count: {job_status.event_count}')

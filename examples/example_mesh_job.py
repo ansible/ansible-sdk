@@ -6,7 +6,6 @@ from ansible_sdk.executors import AnsibleMeshJobExecutor
 
 
 async def main():
-
     executor = AnsibleMeshJobExecutor('/tmp/bar.sock', 'baz')
     jobdef = AnsibleJobDef('datadir', 'pb.yml')
 

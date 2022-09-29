@@ -25,7 +25,7 @@ async def main(example_dir, playbook):
 
     # directly await the job object
     print('*** directly awaiting the job status...')
-    await job_status.stream_task_result()
+    job_status.stream_task_result
 
     print(f'event count: {len(job_status._events)}')
 

@@ -18,6 +18,7 @@ class _JobStatusIterator:
                 await asyncio.wait([asyncio.create_task(self._parent._events_appended.wait()), self._parent._stream_task], return_when=asyncio.FIRST_COMPLETED)
 
             if self._parent._stream_task.done():
+                # Reraises exception of the stream task if there is any.
                 self._parent._stream_task.result()
 
                 raise StopAsyncIteration()
@@ -39,6 +40,7 @@ class AnsibleJobStatus:
         self._events_appended.set()
         self._events_appended.clear()
 
+    @property
     async def stream_task_result(self):
         await self._stream_task
 
