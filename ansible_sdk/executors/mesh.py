@@ -57,8 +57,6 @@ class AnsibleMeshJobExecutor(AnsibleBaseJobExecutor):
         # set the socket to a nonblocking mode (zero timeout) so we can await data from it
         result_socket.setblocking(False)
 
-        status_obj = AnsibleJobStatus()
-
         # FIXME: small line-length limit is problematic with large stdout and zip payloads;
         #  the latter can be handled with an explicit chunked read + copy to disk until separator or
         #  firehose directly into a future aiozipstream. For now, it's just all getting pulled into memory.
@@ -67,6 +65,6 @@ class AnsibleMeshJobExecutor(AnsibleBaseJobExecutor):
 
         await loop.connect_accepted_socket(lambda: protocol, result_socket)
 
-        status_obj._event_streamer = loop.create_task(self._stream_events(reader, status_obj))
-
+        status_obj = AnsibleJobStatus()
+        status_obj._stream_task = loop.create_task(self._stream_events(reader, status_obj))
         return status_obj

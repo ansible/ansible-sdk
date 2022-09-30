@@ -35,10 +35,10 @@ async def main():
 
     # directly await the job object
     print('*** directly awaiting the job status...')
-    await job_status
+    job_status.stream_task_result
 
     print(f'job done? {job_status.done}')
-    print(f'event count: {len(job_status._events)}')
+    print(f'event count: {job_status.event_count}')
 
     print('all done, exiting')
 

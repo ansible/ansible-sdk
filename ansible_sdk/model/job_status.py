@@ -1,74 +1,54 @@
 from __future__ import annotations
 
 import asyncio
+from .job_event import AnsibleJobStatusEvent
 
-from collections.abc import AsyncIterator
 
-from ansible_sdk import AnsibleJobEvent
-from ansible_sdk.model.job_event import (
-    VerboseEvent,
-    PlaybookOnPlayStartEvent,
-    PlaybookOnStartEvent,
-    PlaybookOnTaskStartEvent,
-    PlaybookOnStats,
-)
-from ansible_sdk.model.job_event import (
-    RunnerOnAsyncOKEvent,
-    RunnerOnAsyncPollEvent,
-    RunnerOnOKEvent,
-    RunnerOnStartEvent,
-)
+class _JobStatusIterator:
+    def __init__(self, parent: AnsibleJobStatus):
+        self._parent = parent
+        self._current = 0
+
+    def __aiter__(self) -> _JobStatusIterator:
+        return self
+
+    async def __anext__(self) -> AnsibleJobStatusEvent:
+        while True:
+            if len(self._parent._events) <= self._current:
+                await asyncio.wait([asyncio.create_task(self._parent._events_appended.wait()), self._parent._stream_task], return_when=asyncio.FIRST_COMPLETED)
+
+            if self._parent._stream_task.done():
+                # Reraises exception of the stream task if there is any.
+                self._parent._stream_task.result()
+
+                raise StopAsyncIteration()
+
+            evt = self._parent._events[self._current]
+            self._current += 1
+            if evt:
+                return evt
 
 
 class AnsibleJobStatus:
     def __init__(self):
         self._events = []
-        self._complete = False
-        self._event_streamer = None
-        self._newevent = asyncio.Event()  # fired when a new event arrives to signal awaiting generators to proceed
-        self._done = asyncio.Event()  # fired when the job is complete
+        self._events_appended = asyncio.Event()
+        self._stream_task = None
+
+    async def add_event(self, evt: AnsibleJobStatusEvent):
+        self._events.append(evt)
+        self._events_appended.set()
+        self._events_appended.clear()
 
     @property
-    async def events(self) -> AsyncIterator[AnsibleJobEvent]:
-        # HACK: this approach is a hack, we can do better
-        index = 0
-        while True:
-            # yield any events we haven't yet
-            for ev in self._events[index:]:
-                index += 1
-                if ev["event"] == "verbose":
-                    yield VerboseEvent(**ev)
-                elif ev["event"] == "playbook_on_start":
-                    yield PlaybookOnStartEvent(**ev)
-                elif ev["event"] == "playbook_on_play_start":
-                    yield PlaybookOnPlayStartEvent(**ev)
-                elif ev["event"] == "playbook_on_task_start":
-                    yield PlaybookOnTaskStartEvent(**ev)
-                elif ev["event"] == "runner_on_start":
-                    yield RunnerOnStartEvent(**ev)
-                elif ev["event"] == "runner_on_ok":
-                    yield RunnerOnOKEvent(**ev)
-                elif ev["event"] == "runner_on_async_poll":
-                    yield RunnerOnAsyncPollEvent(**ev)
-                elif ev["event"] == "runner_on_async_ok":
-                    yield RunnerOnAsyncOKEvent(**ev)
-                elif ev["event"] == "playbook_on_stats":
-                    yield PlaybookOnStats(**ev)
-                else:
-                    yield ev
+    async def stream_task_result(self):
+        await self._stream_task
 
-            if self.done:
-                return
+        return self._stream_task.result()
 
-            # chill, let either done or newevent wake us up
-            newevent_task = asyncio.create_task(self._newevent.wait())
-            done_task = asyncio.create_task(self._done.wait())
-            await asyncio.wait([newevent_task, done_task], return_when=asyncio.FIRST_COMPLETED)
-
-    def __await__(self):
-        # make the job object itself awaitable for completion
-        return self._done.wait().__await__()
+    def drop_event(self, evt: AnsibleJobStatusEvent):
+        self._events[self._events.index(evt)] = None
 
     @property
-    def done(self) -> bool:
-        return self._done.is_set()
+    def events(self):
+        return _JobStatusIterator(self)
