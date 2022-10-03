@@ -13,7 +13,7 @@ Ansible SDK is a toolkit that lets you harness the power and simplicity of Ansib
    scenario_guide
    troubleshooting
    faq
-
+   api
 
 Indices and tables
 ==================
