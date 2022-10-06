@@ -1,3 +1,5 @@
+.. _running_mesh_jobs:
+
 ****************************
 Running automation mesh jobs
 ****************************
@@ -8,9 +10,8 @@ Ansible SDK lets you invoke jobs directly on nodes in the automation mesh.
 Prerequisites
 =============
 
-* Install Ansible SDK and requirements, including Ansible and Ansible Runner.
-* Install `Receptor <https://github.com/ansible/receptor>`_.
-* Install `Receptorctl <https://receptor.readthedocs.io/en/latest/index.html#installation>`_.
+* Install Ansible SDK and required software.
+* Install Ansible `Receptor <https://github.com/ansible/receptor>`_.
 
 Setting up a local automation mesh
 ==================================
@@ -76,7 +77,7 @@ Use Ansible SDK to run a playbook on automation mesh as follows:
 
       $ python example_mesh_job.py 
 
-The ``example_mesh_job.py`` program has a main method that connects to the Receptor nodes and runs the ``examples/datadir/project/pb.yml`` playbook.
+The ``example_mesh_job.py`` program has a ``main()`` function that connects to the Receptor nodes and runs the ``examples/datadir/project/pb.yml`` playbook.
 You can verify the job is successful when Ansible SDK prints the following to stdout:
 
 .. code-block:: bash

@@ -1,10 +1,14 @@
 .. _intro:
 
-Introduction to Ansible SDK
-===========================
+Ansible SDK
+===========
 
-The Ansible SDK provides lightweight Python library for dispatching and live-monitoring
-Ansible tasks, roles, and playbooks from the product or project.
+Ansible SDK is a lightweight Python library that lets you dispatch and monitor Ansible tasks, roles, and playbooks from your projects.
 
-Ansible content execution can occur in any combination of local or remote subprocesses, with or without containerization. 
+As a programmatic interface to Ansible, the SDK lets you:
 
+* Access and control Ansible operations.
+* Marshall parameters for operations to different formats.
+* Pass data in native Python structures to and from Ansible.
+
+You can execute Ansible content with the SDK in any combination of local or remote subprocesses with or without containerization.
