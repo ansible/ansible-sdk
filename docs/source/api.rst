@@ -1,5 +1,7 @@
 API Reference
 =============
 
-coming soon
+.. toctree::
+
+   api/modules
 
