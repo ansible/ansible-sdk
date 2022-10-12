@@ -1,14 +1,14 @@
 import asyncio
 
 from ansible_sdk import AnsibleJobDef
-from ansible_sdk.executors import AnsibleSubprocessJobExecutor
+from ansible_sdk.executors import AnsibleSubprocessJobExecutor, AnsibleSubprocessJobOptions
 
 
 async def main(example_dir, playbook):
     executor = AnsibleSubprocessJobExecutor()
-    jobdef = AnsibleJobDef(example_dir, playbook)
+    jobdef = AnsibleJobDef(data_dir=example_dir, playbook=playbook)
 
-    job_status = await executor.submit_job(jobdef)
+    job_status = await executor.submit_job(jobdef, AnsibleSubprocessJobOptions())
 
     # consume events and accumulate stdout replica
     stdout = ''
@@ -25,7 +25,7 @@ async def main(example_dir, playbook):
 
     # directly await the job object
     print('*** directly awaiting the job status...')
-    job_status.stream_task_result
+    await job_status
 
     print(f'event count: {len(job_status._events)}')
 
