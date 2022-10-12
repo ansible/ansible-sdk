@@ -26,7 +26,6 @@ class AnsibleJobStatus:
         self._events_appended.set()
         self._events_appended.clear()
 
-
     def drop_event(self, evt: AnsibleJobStatusEvent):
         """
         Request discard of event data that is no longer needed.

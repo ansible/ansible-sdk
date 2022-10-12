@@ -25,7 +25,6 @@ class AnsibleSubprocessJobOptions(AnsibleJobExecutorOptionsBase):
     """
 
 
-
 class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
     """
     Basic Subprocess Job Executor
