@@ -21,6 +21,7 @@ extensions = [
 
 python_apigen_modules = {
       "ansible_sdk": "api/",
+      "ansible_sdk.executors": "api/executors/"
 }
 
 templates_path = ['_templates']

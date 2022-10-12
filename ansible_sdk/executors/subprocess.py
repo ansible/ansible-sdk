@@ -20,10 +20,16 @@ async_runner = AsyncProxy(async_runner)
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class AnsibleSubprocessJobOptions(AnsibleJobExecutorOptionsBase):
-    pass
+    """
+    Job Options for AnsibleSubprocessJobExecutor
+    """
+
 
 
 class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
+    """
+    Basic Subprocess Job Executor
+    """
     def _get_runner_args(self, job_def: AnsibleJobDef, options: AnsibleSubprocessJobOptions) -> dict[str, t.Any]:
         args = {
             'private_data_dir': job_def.data_dir,
@@ -148,7 +154,11 @@ class _AnsibleContainerJobExecutorBase(AnsibleSubprocessJobExecutor, t.Generic[O
 
 
 class AnsibleDockerJobOptions(_AnsibleContainerJobOptions):
-    pass
+    """
+    Job Options for AnsibleDockerJobExecutor
+
+    :param container_image_ref: Docker-style image reference, eg ``quay.io/ansible/ansible-runner:latest``
+    """
 
 
 class AnsibleDockerJobExecutor(_AnsibleContainerJobExecutorBase[AnsibleDockerJobOptions]):
@@ -156,7 +166,11 @@ class AnsibleDockerJobExecutor(_AnsibleContainerJobExecutorBase[AnsibleDockerJob
 
 
 class AnsiblePodmanJobOptions(_AnsibleContainerJobOptions):
-    pass
+    """
+    Job Options for AnsiblePodmanJobExecutor
+
+    :param container_image_ref: Docker-style image reference, eg ``quay.io/ansible/ansible-runner:latest``
+    """
 
 
 class AnsiblePodmanJobExecutor(_AnsibleContainerJobExecutorBase[AnsiblePodmanJobOptions]):

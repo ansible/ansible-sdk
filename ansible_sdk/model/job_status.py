@@ -9,6 +9,9 @@ from .job_def import AnsibleJobDef
 
 # FIXME: make kw_only+frozen dataclass, expose dataclasses.replace for mutated copies, expose a place for private mutable data
 class AnsibleJobStatus:
+    """
+    Status object for monitoring running/completed jobs.
+    """
     def __init__(self, job_def: AnsibleJobDef):
         self._events = []
         self._events_appended = asyncio.Event()
@@ -23,11 +26,24 @@ class AnsibleJobStatus:
         self._events_appended.set()
         self._events_appended.clear()
 
+
     def drop_event(self, evt: AnsibleJobStatusEvent):
+        """
+        Request discard of event data that is no longer needed.
+
+        :param evt: The returned event object to be discarded
+        """
         self._events[self._events.index(evt)] = None
 
     @property
     async def events(self) -> t.AsyncIterator[AnsibleJobStatusEvent]:
+        """
+        Async iterator to enumerate events from this job. Events are yielded live while the job is running; the
+        iterator will not complete until the job has completed or failed. In cases of job failure or cancellation,
+        the iterator will raise an exception with the appropriate detail.
+
+        :return: a live iterator of ``AnsibleJobStatusEvent`` data for this job
+        """
         cur_ev_idx = 0
         streaming_complete = False
 
@@ -52,6 +68,13 @@ class AnsibleJobStatus:
 
     @property
     async def stdout_lines(self) -> t.AsyncIterator[str]:
+        """
+        Async iterator to enumerate lines of display output text from this job. Text lines are yielded live while the
+        job is running; the iterator will not complete until the job has completed or failed. In cases of job failure or
+        cancellation, the iterator will raise an exception with the appropriate detail.
+
+        :return: an iterator of lines of display output text from the Ansible job
+        """
         async for ev in self.events:
             # normalize some runner oddities
             if 'stdout' in ev:
@@ -63,6 +86,10 @@ class AnsibleJobStatus:
                 yield new_data
 
     def cancel(self):
+        """
+        Request cancellation of a running job by the executor. On successful cancellation, ``CancelledError`` will be on
+        raised on running iterators and on any awaiters of this job object.
+        """
         # currently using the stream task's cancel state as the runner callback cancellation callback "answer"
         if self._stream_task and not self._stream_task.cancelled():
             self._stream_task.cancel()
@@ -71,5 +98,8 @@ class AnsibleJobStatus:
             self._runner_status._output.close()
 
     def __await__(self):
+        """
+        Await completion of this job (eg, ``await job_status_obj``)
+        """
         yield from self._stream_task
         self._stream_task.result()
