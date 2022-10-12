@@ -1,4 +1,6 @@
 - hosts: taskhosts
   tasks:
   - ping:
-  - shell: whoami
+  - wait_for:
+      timeout: 2
+  - shell: echo "$(whoami) from {{ extra_var_value | default('an unset extra_var_value') }}"

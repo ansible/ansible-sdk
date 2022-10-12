@@ -1,5 +1,10 @@
-from .base import AnsibleBaseJobExecutor
+from .base import AnsibleJobExecutorBase
 from .mesh import AnsibleMeshJobExecutor
-from .subprocess import AnsibleSubprocessJobExecutor
+from .subprocess import (AnsibleSubprocessJobExecutor, AnsibleSubprocessJobOptions,
+                         AnsiblePodmanJobExecutor, AnsiblePodmanJobOptions,
+                         AnsibleDockerJobExecutor, AnsibleDockerJobOptions)
 
-__all__ = ('AnsibleBaseJobExecutor', 'AnsibleMeshJobExecutor', 'AnsibleSubprocessJobExecutor',)
+__all__ = ('AnsibleJobExecutorBase', 'AnsibleMeshJobExecutor', 'AnsibleSubprocessJobExecutor',
+           'AnsiblePodmanJobExecutor', 'AnsibleDockerJobExecutor',
+           'AnsibleSubprocessJobOptions', 'AnsiblePodmanJobOptions', 'AnsibleDockerJobOptions'
+           )

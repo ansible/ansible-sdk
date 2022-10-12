@@ -13,7 +13,7 @@ Ansible SDK is a toolkit that lets you harness the power and simplicity of Ansib
    running_mesh_jobs
    troubleshooting
    faq
-
+   api
 
 Indices and tables
 ==================
