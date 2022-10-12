@@ -35,7 +35,7 @@ class AnsibleJobExecutorBase(abc.ABC):
 
             if 'event' in data:
                 # print(f'appending event of type {data["event"]}')
-                await status_obj.add_event(data)
+                status_obj._add_event(data)
             elif 'zipfile' in data:
                 # print(f'zipfile coming, {data["zipfile"]} bytes expected')
                 zf = await reader.readline()
@@ -56,9 +56,3 @@ class AnsibleJobExecutorBase(abc.ABC):
             else:
                 # print('\n\n*** unexpected data... ***\n\n')
                 pass
-            # optional callback for cleanup (eg, delete containers, propagate artifacts, clean up mesh jobs)
-            await self._after_stream_events(job_status=status_obj)
-
-
-    async def _after_stream_events(self, job_status: AnsibleJobStatus) -> None:
-        pass

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import functools
 import os
 import tempfile
 import typing as t
@@ -27,9 +28,15 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
         args = {
             'private_data_dir': job_def.data_dir,
             'playbook': job_def.playbook,
+            'artifacts_handler': None,
+            'extravars': job_def.extra_vars,
+            'verbosity': job_def.verbosity,
         }
 
         return args
+
+    def _is_cancelled(self, job_status: AnsibleJobStatus) -> bool:
+        return job_status._stream_task.cancelled()
 
     async def submit_job(self, job_def: AnsibleJobDef, options: AnsibleSubprocessJobOptions) -> AnsibleJobStatus:
         loop = asyncio.get_running_loop()
@@ -54,8 +61,17 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
         # FIXME: this prevents pollution of the original datadir for local runs and returned artifacts;
         runner_args['private_data_dir'] = tempfile.mkdtemp()
 
+        status_obj = AnsibleJobStatus(job_def)
+
+        cancel_partial = functools.partial(self._is_cancelled, status_obj)
+
         # by using run_async, we can await
-        await asyncio.create_task(async_runner.run_async(streamer='worker', _input=payload_reader, _output=results_writer, **runner_args))
+        runner_status = await asyncio.create_task(async_runner.run_async(
+            streamer='worker',
+            _input=payload_reader,
+            _output=results_writer,
+            cancel_callback=cancel_partial,
+            **runner_args))
         # print('worker running')
 
         # FIXME: it's poor form to fire-and-forget in case there's a failure on the payload builder (which could theoretically result
@@ -75,10 +91,36 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
 
         await loop.connect_read_pipe(lambda: protocol, results_reader)
 
-        status_obj = AnsibleJobStatus()
-        status_obj._stream_task = loop.create_task(self._stream_events(reader, status_obj))
+        status_obj._runner_thread = runner_status[0]  # set before starting the event streamer task, as it may use it
+        status_obj._runner_status = runner_status[1]  # set before starting the event streamer task, as it may use it
         status_obj._executor_options = options
+        status_obj._stream_task = loop.create_task(self._stream_events(reader, status_obj))
         return status_obj
+
+    async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:
+        try:
+            await super()._stream_events(reader=reader, status_obj=status_obj)
+        finally:
+            # force-close the runner IO streams to prevent blocked write deadlock on runner thread in cancel/error cases
+            # (this should cause runner to error out writing to those streams instead of blocking forever)
+            try:
+                status_obj._runner_status._input.close()
+            except Exception:
+                pass
+            try:
+                status_obj._runner_status._output.close()
+            except Exception:
+                pass
+
+        # we only want to do this part if we're not being cancelled
+        status_obj._runner_thread.join(3)
+        if status_obj._runner_thread.is_alive():
+            # FIXME: warning/error?
+            pass
+
+        if status_obj._runner_status.rc != 0:
+            # FIXME: better error
+            raise Exception(f'job failed with exit code {status_obj._runner_status.rc}')
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True)

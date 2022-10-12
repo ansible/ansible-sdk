@@ -38,7 +38,7 @@ class TestKWOnlyPolyfill:
             derived_required_str: str
             derived_optional_str: t.Optional[str] = None
 
-        dc = DerivedDC(required_str='x', derived_required_str='y')
+        DerivedDC(required_str='x', derived_required_str='y')
 
     def test_with_callable_decorator(self):
         @dataclasses.dataclass
@@ -47,4 +47,3 @@ class TestKWOnlyPolyfill:
 
         dc = CallableDecoratorDC(required_str='hi mom')
         assert dc.required_str == 'hi mom'
-

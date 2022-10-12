@@ -41,17 +41,22 @@ class AnsibleMeshJobExecutor(AnsibleJobExecutorBase):
 
         return args
 
-    async def _after_stream_events(self, job_status: AnsibleJobStatus) -> None:
-        # try to release work unit from mesh
-        unit_id = self._running_job_info[job_status].unit_id
+    async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:
         try:
-            async with ReceptorControlAsync.create_ctx(job_status._executor_options.control_socket_url) as rc:
-                print(f'releasing work unit_id {unit_id}')
-                await rc.simple_command_async(f'work force-release {unit_id}')
-                print(f'released work unit_id {unit_id}')
-        except Exception as ex:
-            # FIXME: log and propagate to status object
-            print(f'error releasing work unit_id {unit_id}: {str(ex)}')
+            await super()._stream_events(reader, status_obj)
+        finally:
+            # FIXME: refetch status to get final exitcode
+
+            # try to release work unit from mesh
+            unit_id = self._running_job_info[status_obj].unit_id
+            try:
+                async with ReceptorControlAsync.create_ctx(status_obj._executor_options.control_socket_url) as rc:
+                    print(f'releasing work unit_id {unit_id}')
+                    await rc.simple_command_async(f'work force-release {unit_id}')
+                    print(f'released work unit_id {unit_id}')
+            except Exception as ex:
+                # FIXME: log and propagate to status object
+                print(f'error releasing work unit_id {unit_id}: {str(ex)}')
 
     async def submit_job(self, job_def: AnsibleJobDef, options: AnsibleMeshJobOptions) -> AnsibleJobStatus:
         loop = asyncio.get_running_loop()
@@ -90,6 +95,7 @@ class AnsibleMeshJobExecutor(AnsibleJobExecutorBase):
         # set the socket to a nonblocking mode (zero timeout) so we can await data from it
         result_socket.setblocking(False)
 
+        status_obj = AnsibleJobStatus()
         status_obj._executor_options = options
         self._running_job_info[status_obj] = _MeshJobInfo(unit_id=work_unit_id)
 
@@ -101,7 +107,6 @@ class AnsibleMeshJobExecutor(AnsibleJobExecutorBase):
 
         await loop.connect_accepted_socket(lambda: protocol, result_socket)
 
-        status_obj = AnsibleJobStatus()
         status_obj._stream_task = loop.create_task(self._stream_events(reader, status_obj))
         return status_obj
 

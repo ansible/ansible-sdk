@@ -7,8 +7,8 @@ from ansible_sdk.executors import AnsiblePodmanJobExecutor, AnsiblePodmanJobOpti
 
 async def main():
     executor = AnsiblePodmanJobExecutor()
-    jobdef = AnsibleJobDef('datadir', 'pb.yml')
-    options = AnsiblePodmanJobOptions(image_ref='quay.io/ansible/ansible-runner:devel')
+    jobdef = AnsibleJobDef(data_dir='datadir', playbook='pb.yml')
+    options = AnsiblePodmanJobOptions(container_image_ref='quay.io/ansible/ansible-runner:devel')
 
     job_status = await executor.submit_job(jobdef, options)
 
@@ -29,7 +29,7 @@ async def main():
     print('*** directly awaiting the job status...')
     await job_status
 
-    print(f'job done? {job_status.done}')
+    #print(f'job done? {job_status.done}')
     print(f'event count: {len(job_status._events)}')
 
     print('all done, exiting')

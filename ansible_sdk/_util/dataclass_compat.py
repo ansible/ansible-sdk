@@ -1,5 +1,7 @@
 # make everything from the real module available here
-from dataclasses import *
+import typing as t
+from dataclasses import *  # noqa: F401,F403
+from dataclasses import dataclass, replace as _dc_replace
 
 # this can be removed once we no longer support Python 3.9
 if 'KW_ONLY' not in globals():
@@ -30,3 +32,7 @@ if 'KW_ONLY' not in globals():
         # decorator applied as a type (eg @dataclass); build the class now
         return wrap(cls)
 
+
+class _DataclassReplaceMixin:
+    def replace(self, /, **changes) -> t.Any:  # this should be t.Self in 3.11+
+        return _dc_replace(self, **changes)
