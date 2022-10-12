@@ -1,3 +1,6 @@
+# Copyright: Ansible Project
+# Apache License 2.0 (see LICENSE or https://www.apache.org/licenses/LICENSE-2.0)
+
 # make everything from the real module available here
 import typing as t
 from dataclasses import *  # noqa: F401,F403
