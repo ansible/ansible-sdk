@@ -1,5 +1,5 @@
 API Reference
 =============
 
-.. python-apigen-group:: Classes
+coming soon
 

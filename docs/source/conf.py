@@ -15,14 +15,8 @@ release = '0.0.1'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx_immaterial',
-    'sphinx_immaterial.apidoc.python.apigen'
+     'sphinx_ansible_theme',
 ]
-
-python_apigen_modules = {
-      "ansible_sdk": "api/",
-      "ansible_sdk.executors": "api/executors/"
-}
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -31,5 +25,5 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_immaterial'
+html_theme = 'sphinx_ansible_theme'
 html_static_path = ['_static']

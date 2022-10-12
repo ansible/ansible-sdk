@@ -1,2 +1,2 @@
 Sphinx==5.1.1
-sphinx-immaterial==0.9.1
+sphinx-ansible-theme==0.9.1
