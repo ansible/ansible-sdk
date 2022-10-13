@@ -1,5 +1,8 @@
 API Reference
 =============
 
-.. python-apigen-group:: Classes
+.. toctree::
+
+   api/modules
+   api/executors
 
