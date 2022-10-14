@@ -98,7 +98,7 @@ class AnsibleMeshJobExecutor(AnsibleJobExecutorBase):
         # set the socket to a nonblocking mode (zero timeout) so we can await data from it
         result_socket.setblocking(False)
 
-        status_obj = AnsibleJobStatus()
+        status_obj = AnsibleJobStatus(job_def)
         status_obj._executor_options = options
         self._running_job_info[status_obj] = _MeshJobInfo(unit_id=work_unit_id)
 

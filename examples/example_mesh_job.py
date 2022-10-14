@@ -1,21 +1,22 @@
-
 import asyncio
 
-from ansible_sdk import AnsibleJobDef
-from ansible_sdk.executors import AnsibleMeshJobExecutor
+from ansible_sdk.executors import AnsibleMeshJobExecutor, AnsibleMeshJobOptions
+from example_common import run_one_stdout, run_one_events, run_many
 
 
 async def main():
-    executor = AnsibleMeshJobExecutor('/tmp/bar.sock', 'baz')
-    jobdef = AnsibleJobDef('datadir', 'pb.yml')
+    executor = AnsibleMeshJobExecutor()
+    executor_options = AnsibleMeshJobOptions(
+        control_socket_url='unix:///tmp/foo.sock',
+        target_node='baz',
+        # uncomment the following lines to run in an execution environment via podman (podman must be available on the target node)
+        # container_image_ref='quay.io/ansible/ansible-runner:devel',
+        # container_runtime_exe='podman',
+    )
 
-    jobs = [await executor.submit_job(jobdef) for j in range(0, 5)]
-
-    print('waiting for jobs')
-    done, _ = await asyncio.wait(jobs)
-
-    for j in jobs:
-       print(f'job done: {j.done}, has {len(j._events)} events')
+    await run_one_stdout(executor, executor_options)
+    await run_one_events(executor, executor_options)
+    await run_many(executor, executor_options)
 
 
 if __name__ == '__main__':
