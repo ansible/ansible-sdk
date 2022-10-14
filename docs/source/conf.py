@@ -17,7 +17,8 @@ release = '0.0.1'
 extensions = [
     'sphinx.ext.intersphinx',
     'sphinx_ansible_theme',
-    'sphinxcontrib.apidoc'
+    'sphinx_immaterial',
+    'sphinx_immaterial.apidoc.python.apigen'
 ]
 
 intersphinx_mapping = {
@@ -37,6 +38,24 @@ source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
 }
+
+# Temporarily ignore "missing reference" warnings with apidoc generation.
+nitpicky = True
+nitpick_ignore = [
+    ('py:class', 'ansible_sdk.executors.base.AnsibleJobExecutorOptionsBase'),
+    ('py:class', 'ansible_sdk.executors.subprocess._AnsibleContainerJobOptions'),
+    ('py:class', 'ansible_sdk.executors.subprocess._AnsibleContainerJobExecutorBase'),
+    ('py:class', 'ansible_sdk._util.dataclass_compat._DataclassReplaceMixin'),
+    ('py:class', 'ansible_sdk.executors.subprocess._AnsibleContainerJobExecutorBase'),
+    ('py:class', 'ansible_sdk.executors.subprocess._AnsibleContainerJobOptions'),
+    ('py:class', 'ansible_sdk.executors.subprocess._AnsibleContainerJobExecutorBase'),
+    ('py:class', 'ansible_sdk.executors.subprocess._AnsibleContainerJobOptions'),
+    ('py:class', 'ansible_sdk._util.dataclass_compat._DataclassReplaceMixin'),
+    ('py:class', 'ansible_sdk.executors.subprocess._AnsibleContainerJobExecutorBase'),
+    ('py:class', 'ansible_sdk.executors.subprocess.OptionsT'),
+    ('py:class', 'ansible_sdk.executors.subprocess._AnsibleContainerJobOptions'),
+    ('py:class', 'ansible_sdk.executors.mesh.AnsibleMeshJobOptions'),
+]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "ansible"
