@@ -6,6 +6,8 @@ Ansible tasks, roles, and playbooks from the product or project.
 
 Dispatching of jobs can be local to the machine you are running your python application from or over Ansible Mesh using the receptor integrations.
 
+## Demo App to show how you can use the SDK in real use case - https://github.com/ansible/ansible_sdk_demo
+
 
 ## Releases and maintenance
 
