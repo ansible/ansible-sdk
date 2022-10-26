@@ -25,6 +25,9 @@ Credentials
 Inventory
     List of host systems on which automation jobs run.
 
+Local execution
+***************
+
 Ansible SDK makes multi-threaded, asynchronous calls to the local Ansible executor.
 The local Ansible executor is the runtime on the application host that:
 
@@ -39,3 +42,17 @@ Ansible SDK then passes metrics to the Automation data receiver for reporting an
     :height: 1000
     :align: center
     :alt: This diagram illustrates how Ansible SDK takes inputs and calls the local Ansible executor to perform an automation run.
+
+Reporting and analytics
+***********************
+
+Ansible SDK can persist metrics data that gives you insights into your automation jobs.
+
+.. note::
+    Reporting and analytics functionality is planned for a future version and is not yet available.
+
+.. image:: images/sdk-reporting-analytics.svg
+    :width: 750
+    :height: 1000
+    :align: center
+    :alt: This diagram illustrates how Ansible SDK provides metrics for reporting and analytics.
