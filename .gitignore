@@ -161,4 +161,5 @@ cython_debug/
 docs/build/
 # generated content
 docs/source/api/
+docs/api_reference/api
 .DS_Store

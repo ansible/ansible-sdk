@@ -1,5 +1,5 @@
-API Reference
-=============
+Ansible SDK API
+===============
 
-.. python-apigen-group:: Classes
+Visit the :api_reference:`Ansible SDK API Reference<api/index.html>`
 
