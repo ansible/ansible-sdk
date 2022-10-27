@@ -7,14 +7,10 @@ Running automation mesh jobs
 Automation mesh is a scalable cluster of Receptor nodes that execute Ansible playbooks.
 Ansible SDK lets you invoke jobs directly on nodes in the automation mesh.
 
-Prerequisites
-=============
+*Before you begin:*
 
 * Install Ansible SDK and required software.
 * Install Ansible `Receptor <https://github.com/ansible/receptor>`_.
-
-Setting up a local automation mesh
-==================================
 
 Create a locally running cluster of Receptor nodes with configuration files in the ``examples/receptor_config`` directory:
 
@@ -65,10 +61,7 @@ Create a locally running cluster of Receptor nodes with configuration files in t
 
       $ receptorctl --socket /tmp/bar.sock status
 
-Invoking automation mesh jobs
-=============================
-
-Use Ansible SDK to run a playbook on automation mesh as follows:
+Run the example automation job on the mesh with Ansible SDK as follows:
 
 #. Open a terminal and change to the ``examples`` directory.
 #. Run the following command:
@@ -90,14 +83,12 @@ You can verify the job is successful when Ansible SDK prints the following to st
    waiting for jobs
    job done: True, has <x> events
 
-Troubleshooting
-===============
+**Troubleshooting**
 
 If you encounter issues with this scenario, troubleshoot as follows:
 
-- Check your Ansible SDK installation. See :ref:`install_ansible_sdk`.
-- Ensure you installed Ansible and Ansible Runner.
-- Ensure Receptor is installed correctly.
-- Ensure ``receptorctl`` is installed correctly.
+- Ensure ``receptorctl`` is installed.
 - Ensure your ``/etc/hosts`` file contains entries for each local Receptor node.
 - Ensure you run each Receptor node in a separate terminal in the Ansible SDK virtual environment.
+
+You can find more help in :ref:`sdk_troubleshooting`
