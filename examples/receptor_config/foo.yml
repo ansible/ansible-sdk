@@ -3,6 +3,7 @@
     id: foo
 
 - tcp-listener:
+    bindaddr: 127.0.0.1
     port: 2222
 
 - control-service:
