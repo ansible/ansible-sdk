@@ -8,6 +8,9 @@ Dispatching of jobs can be local to the machine you are running your python appl
 
 ### Demo App to show how you can use the SDK in real use case - https://github.com/ansible/ansible_sdk_demo
 
+## Documentation
+We are building extensive documentation and API reference here - https://ansible-sdk.readthedocs.io/en/latest/install.html
+Please feel free to contribute and help the documentation effort.
 
 ## Releases and maintenance
 
@@ -41,7 +44,5 @@ MacOS - Install PODMAN using BREW, and pull the RHEL8 image, ssh to that and fol
 TBD
 
 ## License
-
-TBD
 
 See [LICENSE](LICENSE.md) to see the full text.
