@@ -15,9 +15,14 @@ release = '0.0.1'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'sphinx.ext.intersphinx',
     'sphinx_ansible_theme',
     'sphinxcontrib.apidoc'
 ]
+
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+}
 
 templates_path = ['_templates']
 exclude_patterns = []
