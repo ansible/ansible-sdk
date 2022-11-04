@@ -12,6 +12,16 @@ Dispatching of jobs can be local to the machine you are running your python appl
 We are building extensive documentation and API reference here - https://ansible-sdk.readthedocs.io/en/latest/install.html
 Please feel free to contribute and help the documentation effort.
 
+You can build the documentation from this repository as follows:
+
+```
+$ tox -e docs
+$ firefox docs/build/html/
+```
+
+If you want to run Sphinx commands directly, open the `tox.ini` file and use the commands in the `[testenv:docs]` section.
+Remember that you need to pip install `docs/doc-requirements.txt` before running Sphinx.
+
 ## Releases and maintenance
 
 TBD
