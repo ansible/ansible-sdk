@@ -15,9 +15,14 @@ release = '0.0.1'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'sphinx.ext.intersphinx',
     'sphinx_immaterial',
     'sphinx_immaterial.apidoc.python.apigen'
 ]
+
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None),
+}
 
 python_apigen_modules = {
       "ansible_sdk": "api/",
