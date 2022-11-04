@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta:__legacy__"
+
+[project]
+name = "ansible-sdk"
+dynamic = ["version"]
+authors = [
+    {name = "Ansible, Inc.", email = "info@ansible.com"},
+]
+description = "Consistent Ansible SDK for Python"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+dependencies = [
+    "ansible-core",
+    "ansible-runner",
+    "receptorctl",
+]
+
+[project.urls]
+Documentation = "https://ansible-sdk.readthedocs.io/en/latest/"
+Source = "https://github.com/ansible/ansible-sdk"
+
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
+doc = ["sphinx"]
+
+[tool.setuptools.dynamic]
+version = {attr = "ansible_sdk.__version__"}
