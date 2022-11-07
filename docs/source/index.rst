@@ -15,9 +15,9 @@ Ansible SDK is a toolkit that lets you harness the power and simplicity of Ansib
    api
 
 .. Uncomment these lines when content is in place.
-..Indices and tables
-..==================
+.. Indices and tables
+.. ==================
 
-..* :ref:`genindex`
-..* :ref:`modindex`
-..* :ref:`search`
+.. * :ref:`genindex`
+.. * :ref:`modindex`
+.. * :ref:`search`
