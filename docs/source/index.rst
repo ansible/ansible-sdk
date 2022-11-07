@@ -5,7 +5,6 @@ Ansible SDK is a toolkit that lets you harness the power and simplicity of Ansib
 
 .. toctree::
    :maxdepth: 1
-   :caption: Table of contents:
 
    intro
    install

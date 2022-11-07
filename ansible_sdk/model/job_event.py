@@ -8,20 +8,17 @@ from dataclasses import dataclass
 
 @dataclass
 class AnsibleJobStatusEvent:
-    """
-    Container object for various Ansible events.
-
-    :param event: name of the event type
-    :param event_data: dictionary of the raw event data
-    :param stdout: display text output associated with this event (if any)
-    """
+    """Container object for various Ansible events."""
     uuid: str
     parent_uuid: str
     counter: int
     stdout: str
+    """Display text output associated with this event (if any)"""
     start_line: int
     end_line: int
     event: str
+    """Name of the event type"""
     event_data: dict
+    """Dictionary of the raw event data"""
     pid: int
     created: str
