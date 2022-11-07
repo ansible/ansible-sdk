@@ -12,12 +12,12 @@ Ansible SDK is a toolkit that lets you harness the power and simplicity of Ansib
    running_ansible_jobs
    running_mesh_jobs
    troubleshooting
-   faq
    api
 
-Indices and tables
-==================
+.. Uncomment these lines when content is in place.
+..Indices and tables
+..==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+..* :ref:`genindex`
+..* :ref:`modindex`
+..* :ref:`search`

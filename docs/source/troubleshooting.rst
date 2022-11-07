@@ -11,6 +11,9 @@ Ensure your Python version is >=3.8 before you start any other troubleshooting s
 
     $ python --version
 
+Resolving common errors
+-----------------------
+
 **Encountered:** ``ModuleNotFoundError: No module named 'ansible_runner'``
 
 Resolution:

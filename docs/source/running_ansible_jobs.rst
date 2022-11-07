@@ -1,8 +1,8 @@
 .. _running_ansible_jobs:
 
-********************
-Running Ansible jobs
-********************
+*****************************
+Running local automation jobs
+*****************************
 
 Ansible jobs execute playbooks against an inventory.
 Ansible SDK provides the following objects to invoke Ansible jobs directly from your project:
@@ -10,13 +10,11 @@ Ansible SDK provides the following objects to invoke Ansible jobs directly from 
 * ``AnsibleJobDef`` defines jobs.
 * ``JobExecutor`` runs jobs.
 
-Prerequisites
-=============
+*Before you begin:*
 
 * Install Ansible SDK and required software.
 
-Running Ansible jobs
-====================
+Run the example automation job with Ansible SDK, do the following:
 
 #. Open a terminal and change to the ``examples`` directory.
 #. Open the ``example_subprocess_job.py`` file with any editor.
