@@ -1,0 +1,49 @@
+name: Update Ansible SDK docs
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  sync:
+    runs-on: ubuntu-22.04
+
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          repository: ansible/ansible-sdk
+          ref: main
+      
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY_DOCS }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_DOCS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+    
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Output Python info
+        run: python --version --version && which python
+
+      - name: Install tox
+        run: sudo pip install tox
+      
+      - if: github.ref == 'refs/heads/main'
+        name: Build and sync
+        run: |
+          tox -e docs
+          rsync -avz --rsync-path="sudo rsync" ./docs/build/html/ ${{ secrets.SSH_USER_DOCS }}@${{ secrets.SSH_HOST_DOCS }}:/var/www/html/ansible-sdk/latest
+      
+      # Add version branch
+      #- if: github.ref == 'refs/heads/xxxx'
+        #name: Copy docs to xxxx
+        #run: |
+          #tox -e docs
+          #find . -regex "\./docs/build/html/.*html$" -exec sed -i -e "s|^<head>$|<head><meta name=\"robots\" content=\"noindex\">|" {} \;
+          #rsync -avz --rsync-path="sudo rsync" ./docs/build/html/ ${{ secrets.SSH_USER_DOCS }}@${{ secrets.SSH_HOST_DOCS }}:/var/www/html/ansible-sdk/xxxx
