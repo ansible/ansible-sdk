@@ -37,5 +37,5 @@ To `pip` install Ansible SDK:
 #. Install Ansible SDK.
 
    .. code-block:: bash
-      
+
        $ pip install -e .

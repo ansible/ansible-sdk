@@ -21,13 +21,13 @@ Resolution:
 #. Check that Ansible Runner is installed in your virtual environment.
 
    .. code-block:: bash
-        
+
       $ pip list | grep ansible_runner
 
 #. Install Ansible Runner if necessary.
 
    .. code-block:: bash
-    
+
       $ pip install ansible-runner
 
 **Encountered:** ``ValueError: private_data_dir path is either invalid or does not exist``
