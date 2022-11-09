@@ -48,8 +48,10 @@ exclude_patterns = []
 #apidoc configuration
 #find more at https://pypi.org/project/sphinxcontrib-apidoc/
 apidoc_module_dir = '../../ansible_sdk/'
-#apidoc_excluded_paths = ['tests']
+apidoc_output_dir = 'api'
 apidoc_separate_modules = True
+apidoc_toc_file = False
+apidoc_module_first = True
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "ansible"
