@@ -52,16 +52,16 @@ The controller node also returns status to Ansible SDK at the end of each automa
     :align: center
     :alt: This diagram illustrates how Ansible SDK takes inputs and calls the controller node to perform an automation run across the mesh.
 
-Reporting and analytics
-***********************
+.. Reporting and analytics
+.. ***********************
 
-Ansible SDK can provide metrics data that gives you insights into your automation jobs.
+.. Ansible SDK can provide metrics data that gives you insights into your automation jobs.
 
-.. note::
-    Reporting and analytics functionality is planned for a future version and is not yet available.
+.. This should be a note
+..    Reporting and analytics functionality is planned for a future version and is not yet available.
 
-.. image:: images/sdk-reporting-analytics.svg
-    :width: 750
-    :height: 1000
-    :align: center
-    :alt: This diagram illustrates how Ansible SDK provides metrics for reporting and analytics.
+.. .. image:: images/sdk-reporting-analytics.svg
+..    :width: 750
+..    :height: 1000
+..    :align: center
+..    :alt: This diagram illustrates how Ansible SDK provides metrics for reporting and analytics.
