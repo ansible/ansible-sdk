@@ -23,7 +23,7 @@ Credentials
 Inventory
     List of host systems on which automation jobs run.
 
-With those inputs, Ansible SDK makes multi-threaded, asynchronous calls to perform automation runs against your project payload.
+With those inputs, Ansible SDK makes asynchronous calls to perform automation runs against your project payload.
 You can execute Ansible content with the SDK in any combination of local or remote subprocesses.
 You can also use execution environments, which are container images packaged with all dependencies.
 
