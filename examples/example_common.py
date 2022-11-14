@@ -3,12 +3,12 @@ import asyncio
 from ansible_sdk import AnsibleJobDef
 
 
-async def run_one_stdout(executor, executor_options):
+async def run_one_stdout(executor, executor_options, playbook='pb.yml'):
     """
     Run a single playbook job with several hosts and echo the display output as it arrives
     """
     try:
-        job_def = AnsibleJobDef(data_dir='datadir', playbook='pb.yml')
+        job_def = AnsibleJobDef(data_dir='datadir', playbook=playbook)
         job_status = await executor.submit_job(job_def, executor_options)
 
         async for line in job_status.stdout_lines:
