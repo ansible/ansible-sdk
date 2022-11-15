@@ -20,6 +20,7 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     :param limit: Matches Ansible's ``--limit`` parameter to further constrain the inventory to be used
     :param ident: The run identifier for this invocation of Runner. Will be used to create and name
                   the artifact directory holding the results of the invocation.
+    :param forks: Control Ansible parallel concurrency
     """
     # currently analogue to runner's private_data_dir; do we want to construct this ourselves?
     data_dir: str
@@ -27,6 +28,7 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     playbook: str
     limit: str = None
     ident: str = None
+    forks: t.Optional[int] = None
     inventory: t.Optional[t.Union[str, list[str]]] = None  # FUTURE: high-level inventory types?
     extra_vars: dict[str, t.Any] = field(default_factory=dict)
     verbosity: t.Optional[int] = None  # None or 1-5
