@@ -43,25 +43,10 @@ Remote execution
 ****************
 
 Ansible SDK calls the Automation mesh controller node to perform automation runs.
-The controller node is the central component that pulls execution environments and runs your automation jobs across remote nodes in the Automation mesh.
-The controller node also returns status to Ansible SDK at the end of each automation run.
+The controller node runs your automation jobs on remote execution environments and returns status to Ansible SDK.
 
 .. image:: images/sdk-remote-executor.svg
     :width: 750
     :height: 1000
     :align: center
     :alt: This diagram illustrates how Ansible SDK takes inputs and calls the controller node to perform an automation run across the mesh.
-
-.. Reporting and analytics
-.. ***********************
-
-.. Ansible SDK can provide metrics data that gives you insights into your automation jobs.
-
-.. This should be a note
-..    Reporting and analytics functionality is planned for a future version and is not yet available.
-
-.. .. image:: images/sdk-reporting-analytics.svg
-..    :width: 750
-..    :height: 1000
-..    :align: center
-..    :alt: This diagram illustrates how Ansible SDK provides metrics for reporting and analytics.
