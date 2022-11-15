@@ -3,12 +3,15 @@ import asyncio
 from ansible_sdk import AnsibleJobDef
 
 
-async def run_one_stdout(executor, executor_options, playbook='pb.yml'):
+async def run_one_stdout(executor, executor_options, job_options={}):
     """
     Run a single playbook job with several hosts and echo the display output as it arrives
     """
+    playbook = job_options.get('playbook', 'pb.yml')
+    datadir = job_options.get('datadir', 'datadir')
+    limit = job_options.get('limit', None)
     try:
-        job_def = AnsibleJobDef(data_dir='datadir', playbook=playbook)
+        job_def = AnsibleJobDef(data_dir=datadir, playbook=playbook, limit=limit)
         job_status = await executor.submit_job(job_def, executor_options)
 
         async for line in job_status.stdout_lines:
@@ -21,13 +24,16 @@ async def run_one_stdout(executor, executor_options, playbook='pb.yml'):
         print('all done, exiting')
 
 
-async def run_one_events(executor, executor_options):
+async def run_one_events(executor, executor_options, job_options={}):
     """
     Run a single playbook job with several hosts using the specified executor and options, and dump the raw event
     output to the display as it arrives
     """
+    playbook = job_options.get('playbook', 'pb.yml')
+    datadir = job_options.get('datadir', 'datadir')
+    limit = job_options.get('limit', None)
     try:
-        job_def = AnsibleJobDef(data_dir='datadir', playbook='pb.yml')
+        job_def = AnsibleJobDef(data_dir=datadir, playbook=playbook, limit=limit)
         job_status = await executor.submit_job(job_def, executor_options)
 
         eventcount = 0
@@ -44,13 +50,16 @@ async def run_one_events(executor, executor_options):
         print('all done, exiting')
 
 
-async def run_many(executor, executor_options):
+async def run_many(executor, executor_options, job_options={}):
     """
     Run five concurrent jobs (with slightly different definitions) against several hosts and dump the raw event
     output to the display as it arrives (interleaving output between the jobs).
     """
+    playbook = job_options.get('playbook', 'pb.yml')
+    datadir = job_options.get('datadir', 'datadir')
+    limit = job_options.get('limit', None)
     try:
-        job_def = AnsibleJobDef(data_dir='datadir', playbook='pb.yml')
+        job_def = AnsibleJobDef(data_dir=datadir, playbook=playbook, limit=limit)
 
         num_jobs = 5
 

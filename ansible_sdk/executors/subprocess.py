@@ -39,6 +39,7 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
             'artifacts_handler': None,
             'extravars': job_def.extra_vars,
             'verbosity': job_def.verbosity,
+            'limit': job_def.limit,
         }
 
         return args
