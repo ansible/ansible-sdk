@@ -13,26 +13,13 @@ async def main(job_options={}):
 
     job_status = await executor.submit_job(jobdef, AnsibleSubprocessJobOptions())
 
-    # consume events and accumulate stdout replica
-    stdout = ''
-
     # consume events as they arrive
     eventcount = 0
     async for ev in job_status.events:
         eventcount += 1
-        print(f'*** consumed event {ev}')
-
-    print(f'event enumeration completed, total {eventcount}')
-
-    print(f'stdout results: {stdout}')
 
     # directly await the job object
-    print('*** directly awaiting the job status...')
     await job_status
-
-    print(f'event count: {len(job_status._events)}')
-
-    print('all done, exiting')
 
 
 def test_basic(datadir):
