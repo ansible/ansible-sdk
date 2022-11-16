@@ -27,3 +27,4 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     inventory: t.Optional[t.Union[str, list[str]]] = None  # FUTURE: high-level inventory types?
     extra_vars: dict[str, t.Any] = field(default_factory=dict)
     verbosity: t.Optional[int] = None  # None or 1-5
+    quiet: t.Optional[bool] = False

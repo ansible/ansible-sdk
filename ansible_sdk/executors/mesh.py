@@ -54,12 +54,10 @@ class AnsibleMeshJobExecutor(AnsibleJobExecutorBase):
             unit_id = self._running_job_info[status_obj].unit_id
             try:
                 async with ReceptorControlAsync.create_ctx(status_obj._executor_options.control_socket_url) as rc:
-                    print(f'releasing work unit_id {unit_id}')
                     await rc.simple_command_async(f'work force-release {unit_id}')
-                    print(f'released work unit_id {unit_id}')
             except Exception as ex:
                 # FIXME: log and propagate to status object
-                print(f'error releasing work unit_id {unit_id}: {str(ex)}')
+                pass
 
     async def submit_job(self, job_def: AnsibleJobDef, options: AnsibleMeshJobOptions) -> AnsibleJobStatus:
         loop = asyncio.get_running_loop()
@@ -70,10 +68,8 @@ class AnsibleMeshJobExecutor(AnsibleJobExecutorBase):
             payload_builder = asyncio.create_task(asyncio_write_payload_and_close(payload_writer=payload_writer, **self._get_runner_args(job_def, options)))
 
             async with ReceptorControlAsync.create_ctx(options.control_socket_url) as rc:
-                print('submitting work')
                 work_submission = await rc.submit_work_async('ansible-runner', payload=payload_reader, node=options.target_node)
                 work_unit_id: str = work_submission['unitid']
-                print(f'work submitted, unit_id {work_unit_id}')
 
                 # FIXME: it's poor form to fire-and-forget in case there's a failure on the payload builder (which could theoretically result
                 #  in a truncated or forever-blocked work submission), but we can't await before submission starts, since a large
@@ -81,16 +77,13 @@ class AnsibleMeshJobExecutor(AnsibleJobExecutorBase):
                 #  file-like that would allow for a more asyncio-native solution. Also think through how we'd recover a failure at this
                 #  point, since the work has already been submitted with a potentially bad payload.
                 await payload_builder
-                print('payload builder completed ok')
 
         result_socket: socket.socket
         sockfile: io.FileIO
 
         # BUG: setting return_sockfile False fails in receptorctl (access to misnamed instance attr trying to close the sockfile)
         async with ReceptorControlAsync.create_ctx(options.control_socket_url) as rc:
-            print('getting results')
             result_socket, sockfile = await rc.get_work_results_async(work_unit_id, return_socket=True, return_sockfile=True)
-            print('got results')
 
         # mimic what the client would do if return_sockfile weren't broken
         sockfile.close()

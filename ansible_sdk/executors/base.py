@@ -32,30 +32,19 @@ class AnsibleJobExecutorBase(abc.ABC):
                 raise Exception('empty line received; unexpected EOF')
 
             data = await async_json.loads(line)
-            # print(f'decoded json, got keys {data.keys()}')
-
-            # print(f'got a line of length {len(line)}')
 
             if 'event' in data:
-                # print(f'appending event of type {data["event"]}')
                 status_obj._add_event(data)
             elif 'zipfile' in data:
-                # print(f'zipfile coming, {data["zipfile"]} bytes expected')
                 zf = await reader.readline()
                 # FIXME: handle returned artifacts
-                # print(f'received {len(zf)} raw bytes (and discarded)')
-
                 # FIXME: is this a bug?
                 if b'{"eof": true}' in zf:
-                    # print('eof was embedded in zip line, done with stream_events')
                     break
             elif 'eof' in data:
-                # print('got eof, done with stream_events')
                 break
             elif 'status' in data:
                 # FIXME: propagate to status object
-                # print(f'got status blob: {line[0:100]} ... ')
                 pass
             else:
-                # print('\n\n*** unexpected data... ***\n\n')
                 pass
