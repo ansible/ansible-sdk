@@ -8,6 +8,7 @@ async def main():
     executor = AnsiblePodmanJobExecutor()
     executor_options = AnsiblePodmanJobOptions(container_image_ref='quay.io/ansible/ansible-runner:devel')
     job_options = {
+        'playbook': 'pb.yml',
         'limit': 1
     }
 

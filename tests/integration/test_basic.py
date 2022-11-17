@@ -11,8 +11,23 @@ async def main(job_options={}):
     executor = AnsibleSubprocessJobExecutor()
     example_dir = job_options.get("datadir")
     playbook = job_options.get("playbook")
+    limit = job_options.get("limit")
+    forks = job_options.get("forks")
+    ident = job_options.get("ident")
+    module = job_options.get("module")
+    module_args = job_options.get("module_args")
+    host_pattern = job_options.get("host_pattern")
 
-    jobdef = AnsibleJobDef(data_dir=example_dir, playbook=playbook)
+    jobdef = AnsibleJobDef(
+        data_dir=example_dir,
+        playbook=playbook,
+        limit=limit,
+        forks=forks,
+        ident=ident,
+        module=module,
+        module_args=module_args,
+        host_pattern=host_pattern,
+    )
 
     job_status = await executor.submit_job(jobdef, AnsibleSubprocessJobOptions())
 
@@ -68,10 +83,21 @@ def test_forks(datadir):
 
 
 def test_ident(datadir):
-    example_dir = str(datadir / 'basic')
+    example_dir = str(datadir / "basic")
     job_options = {
-        'datadir': example_dir,
-        'playbook': 'pb.yml',
-        'ident': 'sample_dir',
+        "datadir": example_dir,
+        "playbook": "pb.yml",
+        "ident": "sample_dir",
+    }
+    asyncio.run(main(job_options))
+
+
+def test_module(datadir):
+    example_dir = str(datadir / "basic")
+    job_options = {
+        "datadir": example_dir,
+        "module": "debug",
+        "module_args": 'msg="Hello World from Ansible SDK"',
+        "host_pattern": "localhost",
     }
     asyncio.run(main(job_options))

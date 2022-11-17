@@ -42,6 +42,9 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
             'limit': job_def.limit,
             'ident': job_def.ident,
             'forks': job_def.forks,
+            'module': job_def.module,
+            'module_args': job_def.module_args,
+            'host_pattern': job_def.host_pattern,
         }
 
         return args

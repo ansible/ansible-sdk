@@ -9,6 +9,7 @@ async def main():
     executor = AnsibleSubprocessJobExecutor()
     executor_options = AnsibleSubprocessJobOptions()
     job_options = {
+        'playbook': 'pb.yml',
         'forks': 1
     }
 
