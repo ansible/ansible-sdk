@@ -30,8 +30,8 @@ You can also use execution environments, which are container images packaged wit
 Local execution
 ***************
 
-Ansible SDK calls the local Ansible executor to perform automation runs.
-The local Ansible executor is the runtime on the application host that pulls execution environments, runs your automation jobs, and returns status to Ansible SDK.
+Ansible SDK calls Ansible-Runner to perform automation runs.
+Ansible-Runner is the runtime on the application host that pulls execution environments, runs your automation jobs, and returns status to Ansible SDK.
 
 .. image:: images/sdk-local-executor.svg
     :width: 750
