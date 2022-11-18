@@ -9,7 +9,10 @@ async def main():
     executor = AnsibleSubprocessJobExecutor()
     executor_options = AnsibleSubprocessJobOptions()
 
-    await run_one_stdout(executor, executor_options, playbook='vault.yml')
+    job_options = {
+        'playbook': 'vault.yml'
+    }
+    await run_one_stdout(executor, executor_options, job_options=job_options)
 
 
 if __name__ == '__main__':
