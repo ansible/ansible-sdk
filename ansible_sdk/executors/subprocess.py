@@ -40,6 +40,7 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
             'extravars': job_def.extra_vars,
             'verbosity': job_def.verbosity,
             'limit': job_def.limit,
+            'ident': job_def.ident,
         }
 
         return args
