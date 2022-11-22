@@ -41,6 +41,7 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
             'verbosity': job_def.verbosity,
             'limit': job_def.limit,
             'ident': job_def.ident,
+            'forks': job_def.forks,
         }
 
         return args
