@@ -10,8 +10,10 @@ async def run_one_stdout(executor, executor_options, job_options={}):
     playbook = job_options.get('playbook', 'pb.yml')
     datadir = job_options.get('datadir', 'datadir')
     limit = job_options.get('limit', None)
+    ident = job_options.get('ident', None)
+
     try:
-        job_def = AnsibleJobDef(data_dir=datadir, playbook=playbook, limit=limit)
+        job_def = AnsibleJobDef(data_dir=datadir, playbook=playbook, limit=limit, ident=ident)
         job_status = await executor.submit_job(job_def, executor_options)
 
         async for line in job_status.stdout_lines:
@@ -32,8 +34,10 @@ async def run_one_events(executor, executor_options, job_options={}):
     playbook = job_options.get('playbook', 'pb.yml')
     datadir = job_options.get('datadir', 'datadir')
     limit = job_options.get('limit', None)
+    ident = job_options.get('ident', None)
+
     try:
-        job_def = AnsibleJobDef(data_dir=datadir, playbook=playbook, limit=limit)
+        job_def = AnsibleJobDef(data_dir=datadir, playbook=playbook, limit=limit, ident=ident)
         job_status = await executor.submit_job(job_def, executor_options)
 
         eventcount = 0
@@ -58,8 +62,10 @@ async def run_many(executor, executor_options, job_options={}):
     playbook = job_options.get('playbook', 'pb.yml')
     datadir = job_options.get('datadir', 'datadir')
     limit = job_options.get('limit', None)
+    ident = job_options.get('ident', None)
+
     try:
-        job_def = AnsibleJobDef(data_dir=datadir, playbook=playbook, limit=limit)
+        job_def = AnsibleJobDef(data_dir=datadir, playbook=playbook, limit=limit, ident=ident)
 
         num_jobs = 5
 

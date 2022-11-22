@@ -52,3 +52,13 @@ def test_limit(datadir):
         'limit': 'h1',
     }
     asyncio.run(main(job_options))
+
+
+def test_ident(datadir):
+    example_dir = str(datadir / 'basic')
+    job_options = {
+        'datadir': example_dir,
+        'playbook': 'pb.yml',
+        'ident': 'sample_dir',
+    }
+    asyncio.run(main(job_options))
