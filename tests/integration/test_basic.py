@@ -1,4 +1,5 @@
 import asyncio
+import pathlib
 
 from ansible_sdk import AnsibleJobDef
 from ansible_sdk.executors import (
@@ -18,6 +19,8 @@ async def main(job_options={}):
     module_args = job_options.get("module_args")
     host_pattern = job_options.get("host_pattern")
     env_vars = job_options.get("env_vars", {})
+    role = job_options.get("role", '')
+    roles_path = job_options.get("roles_path", None)
 
     jobdef = AnsibleJobDef(
         data_dir=example_dir,
@@ -29,6 +32,8 @@ async def main(job_options={}):
         module_args=module_args,
         host_pattern=host_pattern,
         env_vars=env_vars,
+        role=role,
+        roles_path=roles_path,
     )
 
     job_status = await executor.submit_job(jobdef, AnsibleSubprocessJobOptions())
@@ -113,6 +118,16 @@ def test_env_vars(datadir):
         "env_vars": {
             "SAMPLE_ENV": "Sample env variable",
         },
+    }
+
+    asyncio.run(main(job_options))
+
+
+def test_role(datadir):
+    file_path = pathlib.Path(__file__).parent.resolve()
+    job_options = {
+        'role': 'hello_world',
+        'roles_path': '%s/roles' % file_path
     }
 
     asyncio.run(main(job_options))

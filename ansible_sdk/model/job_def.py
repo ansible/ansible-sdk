@@ -27,6 +27,8 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     :param host_pattern: The host pattern to match when running in ad-hoc mode.
     :param timeout: The timeout value in seconds that will be passed to ``subprocess`` invocation while executing
                     command. It the timeout is triggered it will force cancel the execution.
+    :param role: Name of the role to execute.
+    :param roles_path: Directory or list of directories to assign to ANSIBLE_ROLES_PATH
     """
     # currently analogue to runner's private_data_dir; do we want to construct this ourselves?
     data_dir: str
@@ -43,3 +45,5 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     extra_vars: dict[str, t.Any] = field(default_factory=dict)
     verbosity: t.Optional[int] = None  # None or 1-5
     timeout: int = None
+    role: str = ''
+    roles_path: t.Optional[t.Union[str, list[str]]] = None

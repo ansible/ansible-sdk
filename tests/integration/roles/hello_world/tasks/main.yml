@@ -1,0 +1,5 @@
+---
+# tasks file for hello_world
+- name: Test Role from Ansible SDK
+  debug:
+    msg: "Hello World from Ansible SDK"
