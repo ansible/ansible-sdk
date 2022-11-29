@@ -24,7 +24,7 @@ Create a locally running cluster of Receptor nodes with configuration files in t
       127.0.0.1 baz.example.com
 
 #. Open a terminal and start the first Receptor node.
-   
+
    a. Activate your virtual environment for Ansible SDK.
 
       .. code-block:: bash
@@ -38,7 +38,7 @@ Create a locally running cluster of Receptor nodes with configuration files in t
          $ receptor --config foo.yml
 
 #. Open a new terminal and start the second Receptor node.
-   
+
    a. Activate your virtual environment for Ansible SDK.
    b. Start a node with the ``bar.yml`` configuration.
 
@@ -47,7 +47,7 @@ Create a locally running cluster of Receptor nodes with configuration files in t
          $ receptor --config bar.yml
 
 #. Open a new terminal and start the third Receptor node.
-   
+
    a. Activate your virtual environment for Ansible SDK.
    b. Start a node with the ``baz.yml`` configuration.
 
@@ -56,7 +56,7 @@ Create a locally running cluster of Receptor nodes with configuration files in t
          $ receptor --config baz.yml
 
 #. Verify that the automation mesh is running.
-    
+
    .. code-block:: bash
 
       $ receptorctl --socket /tmp/bar.sock status
@@ -68,7 +68,7 @@ Run the example automation job on the mesh with Ansible SDK as follows:
 
    .. code-block:: bash
 
-      $ python example_mesh_job.py 
+      $ python example_mesh_job.py
 
 The ``example_mesh_job.py`` program has a ``main()`` function that connects to the Receptor nodes and runs the ``examples/datadir/project/pb.yml`` playbook.
 You can verify the job is successful when Ansible SDK prints the following to stdout:

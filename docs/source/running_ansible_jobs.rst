@@ -20,7 +20,7 @@ Run the example automation job with Ansible SDK, do the following:
 #. Open the ``example_subprocess_job.py`` file with any editor.
 
    .. code-block:: python
-       
+
       #Imports Ansible SDK modules.
       from ansible_sdk import AnsibleJobDef
       from ansible_sdk.executors import AnsibleSubprocessJobExecutor
@@ -33,7 +33,7 @@ Run the example automation job with Ansible SDK, do the following:
       #Configures the job definition.
       jobdef = AnsibleJobDef('datadir', 'pb.yml')
       #Runs the job with the executor.
-      job_status = await executor.submit_job(jobdef) 
+      job_status = await executor.submit_job(jobdef)
 
 #. Run the example program as follows:
 

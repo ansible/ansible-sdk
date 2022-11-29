@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="artwork"
+   viewBox="0 0 760 452.88"
+   version="1.1"
+   sodipodi:docname="sdk-local-executor.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview185"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.4739198"
+     inkscape:cx="265.61825"
+     inkscape:cy="191.32656"
+     inkscape:window-width="1920"
+     inkscape:window-height="979"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="artwork" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-2,.cls-4,.cls-8{fill:none}.cls-2,.cls-4,.cls-8,.cls-9{stroke-linecap:round;stroke-linejoin:round}.cls-2,.cls-9{stroke:#5b5b5b;stroke-width:1.5px}.cls-4,.cls-8{stroke:#06c}.cls-11,.cls-12{fill:#151515}.cls-13{fill:#06c}.cls-14,.cls-9{fill:#fff}.cls-15{fill:#e8e8e8}.cls-16{fill:#d9e8f7}.cls-11,.cls-12{font-family:RedHatText,&quot;Red Hat Text&quot;,Overpass,&quot;Helvetica Neue&quot;,Arial,sans-serif;font-weight:500;font-size:11px}.cls-12{font-variation-settings:'wght' 500}.cls-8{stroke-dasharray:0 0 2.4 2.4}</style>
+  </defs>
+  <text
+     transform="translate(717.48 435.89)"
+     fill="#ececec"
+     font-family="RedHatText,&quot;Red Hat Text&quot;,Overpass,&quot;Helvetica Neue&quot;,Arial,sans-serif"
+     font-size="10"
+     id="text8"><tspan
+       x="0"
+       y="0"
+       id="tspan6">285_1022</tspan></text>
+  <path
+     fill="none"
+     d="M0 412.88h760v40H0z"
+     id="path10" />
+  <path
+     class="cls-15"
+     d="M453 22v287H2V22h451m2-2H0v291h455V20z"
+     id="path12" />
+  <path
+     stroke="#fff"
+     stroke-width="8"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     fill="none"
+     d="M157.5 302.47v12.06"
+     id="path14" />
+  <path
+     class="cls-4"
+     d="M227.5 116.5v100M157.5 216.55v14.82"
+     id="path16" />
+  <path
+     class="cls-13"
+     d="M152.51 229.91l4.99 8.64 4.99-8.64h-9.98z"
+     id="path18" />
+  <path
+     class="cls-4"
+     d="M157.5 300.68v20.64"
+     id="path20" />
+  <path
+     class="cls-13"
+     d="M152.51 302.14l4.99-8.64 4.99 8.64h-9.98zM152.51 319.86l4.99 8.64 4.99-8.64h-9.98z"
+     id="path22" />
+  <path
+     class="cls-4"
+     d="M87.5 116.5v100h280v-100"
+     id="path24" />
+  <text
+     transform="translate(20 51.53)"
+     fill="#151515"
+     font-family="RedHatText,&quot;Red Hat Text&quot;,Overpass,&quot;Helvetica Neue&quot;,Arial,sans-serif"
+     font-weight="700"
+     font-size="14"
+     id="text28"><tspan
+       x="0"
+       y="0"
+       id="tspan26">Python application</tspan></text>
+  <path
+     class="cls-15"
+     d="M20 66.5h135v50H20z"
+     id="path30" />
+  <path
+     class="cls-14"
+     d="M20 158.69h415V195H20z"
+     id="path32" />
+  <text
+     class="cls-11"
+     transform="translate(68.63 88.55)"
+     id="text38"><tspan
+       x="0"
+       y="0"
+       id="tspan34">Project</tspan><tspan
+       x="1.56"
+       y="12"
+       id="tspan36">source</tspan></text>
+  <path
+     class="cls-15"
+     d="M160 66.5h135v50H160z"
+     id="path40" />
+  <text
+     class="cls-11"
+     transform="translate(200.43 88.55)"
+     id="text46"><tspan
+       x="0"
+       y="0"
+       id="tspan42">Credential</tspan><tspan
+       x="9.76"
+       y="12"
+       id="tspan44">source</tspan></text>
+  <path
+     class="cls-16"
+     d="M90 241h135v50H90z"
+     id="path48" />
+  <text
+     class="cls-11"
+     transform="translate(126.05 263.05)"
+     id="text54"><tspan
+       x="0"
+       y="0"
+       id="tspan50">Ansible SDK</tspan><tspan
+       x="-.91"
+       y="12"
+       id="tspan52">async library</tspan></text>
+  <path
+     class="cls-16"
+     d="M90 331h135v50H90z"
+     id="path56" />
+  <text
+     class="cls-11"
+     id="text60"
+     x="119.49001"
+     y="359.04999"><tspan
+       x="119.49001"
+       y="359.04999"
+       id="tspan58">Ansible Runner</tspan></text>
+  <path
+     class="cls-15"
+     d="M90 386h135v50H90z"
+     id="path62" />
+  <text
+     class="cls-11"
+     transform="translate(131.66 408.05)"
+     id="text68"><tspan
+       x="0"
+       y="0"
+       id="tspan64">Execution</tspan><tspan
+       x="-6.97"
+       y="12"
+       id="tspan66">environment</tspan></text>
+  <path
+     class="cls-15"
+     d="M300 66.5h135v50H300z"
+     id="path70" />
+  <text
+     class="cls-11"
+     transform="translate(342.76 88.55)"
+     id="text76"><tspan
+       x="0"
+       y="0"
+       id="tspan72">Inventory</tspan><tspan
+       x="7.43"
+       y="12"
+       id="tspan74">source</tspan></text>
+  <text
+     class="cls-12"
+     transform="translate(68.63 187.64)"
+     id="text80"><tspan
+       x="0"
+       y="0"
+       id="tspan78">Project</tspan></text>
+  <path
+     class="cls-9"
+     d="M103.9 171H71.1v-20.01l5.27-5.27h27.53V171z"
+     id="path82" />
+  <path
+     class="cls-9"
+     d="M71.1 150.99h5.27v-5.27l-5.27 5.27z"
+     id="path84" />
+  <path
+     class="cls-2"
+     d="M91.38 152.08h-3.82v12.63h3.82M87.56 158.39h-3.82"
+     id="path86" />
+  <circle
+     class="cls-9"
+     cx="78.72"
+     cy="158.39"
+     r="2.51"
+     id="circle88" />
+  <circle
+     class="cls-9"
+     cx="96.4"
+     cy="164.71"
+     r="2.51"
+     id="circle90" />
+  <circle
+     class="cls-9"
+     cx="96.4"
+     cy="152.08"
+     r="2.51"
+     id="circle92" />
+  <g
+     id="g102">
+    <text
+       class="cls-12"
+       transform="translate(197.8 187.64)"
+       id="text96"><tspan
+         x="0"
+         y="0"
+         id="tspan94">Credentials</tspan></text>
+    <path
+       class="cls-9"
+       d="M224.98 154.17a8.198 8.198 0 012.52-16c4.53 0 8.2 3.67 8.2 8.2 0 3.16-1.79 5.9-4.42 7.27s0 4.71 0 4.71l-1.26 1.27 2.52 2.52-2.52 2.52v3.8l-2.52 2.52-2.52-2.52v-14.31z"
+       id="path98" />
+    <circle
+       cx="227.5"
+       cy="141.95"
+       r=".79"
+       fill="#5b5b5b"
+       id="circle100" />
+  </g>
+  <g
+     id="g130">
+    <text
+       class="cls-12"
+       transform="translate(342.76 187.64)"
+       id="text106"><tspan
+         x="0"
+         y="0"
+         id="tspan104">Inventory</tspan></text>
+    <path
+       class="cls-2"
+       d="M363.7 154.59h-7.58M378.88 154.59h-7.58M367.5 158.39v7.58M367.5 143.22v7.57"
+       id="path108" />
+    <circle
+       class="cls-9"
+       cx="381.39"
+       cy="154.59"
+       r="2.51"
+       id="circle110" />
+    <circle
+       class="cls-9"
+       cx="381.39"
+       cy="168.49"
+       r="2.51"
+       id="circle112" />
+    <circle
+       class="cls-9"
+       cx="381.39"
+       cy="140.7"
+       r="2.51"
+       id="circle114" />
+    <circle
+       class="cls-9"
+       cx="367.5"
+       cy="154.59"
+       r="3.8"
+       id="circle116" />
+    <path
+       class="cls-9"
+       d="M370.19 157.28l9.43 9.43M364.82 151.9l-9.43-9.42M355.39 166.71l9.43-9.43M379.62 142.48l-9.43 9.43"
+       id="path118" />
+    <circle
+       class="cls-9"
+       cx="367.5"
+       cy="168.49"
+       r="2.51"
+       id="circle120" />
+    <circle
+       class="cls-9"
+       cx="367.5"
+       cy="140.7"
+       r="2.51"
+       id="circle122" />
+    <circle
+       class="cls-9"
+       cx="353.61"
+       cy="154.59"
+       r="2.51"
+       id="circle124" />
+    <circle
+       class="cls-9"
+       cx="353.61"
+       cy="168.49"
+       r="2.51"
+       id="circle126" />
+    <circle
+       class="cls-9"
+       cx="353.61"
+       cy="140.7"
+       r="2.51"
+       id="circle128" />
+  </g>
+  <g
+     id="g144">
+    <path
+       class="cls-4"
+       d="M622.5 306.05v1.5"
+       id="path132" />
+    <path
+       stroke-dasharray="0 0 3.09 3.09"
+       stroke="#06c"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       fill="none"
+       d="M622.5 310.64v97.32"
+       id="path134" />
+    <path
+       class="cls-4"
+       d="M622.5 409.5v1.5H621"
+       id="path136" />
+    <path
+       stroke="#06c"
+       stroke-dasharray="0 0 2.98 2.98"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       fill="none"
+       d="M618.02 411H237.67"
+       id="path138" />
+    <path
+       class="cls-4"
+       d="M236.18 411h-1.5"
+       id="path140" />
+    <path
+       class="cls-13"
+       d="M236.14 406.01L227.5 411l8.64 4.99v-9.98z"
+       id="path142" />
+  </g>
+  <g
+     id="g160">
+    <path
+       class="cls-4"
+       d="M692.5 291v1.5"
+       id="path146" />
+    <path
+       class="cls-8"
+       d="M692.5 294.9v8.4"
+       id="path148" />
+    <path
+       class="cls-4"
+       d="M692.5 304.5v1.5H691"
+       id="path150" />
+    <path
+       stroke-dasharray="0 0 3.04 3.04"
+       stroke="#06c"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       fill="none"
+       d="M687.96 306H555.52"
+       id="path152" />
+    <path
+       class="cls-4"
+       d="M554 306h-1.5v-1.5"
+       id="path154" />
+    <path
+       class="cls-8"
+       d="M552.5 302.1v-8.4"
+       id="path156" />
+    <path
+       class="cls-4"
+       d="M552.5 292.5V291"
+       id="path158" />
+  </g>
+  <g
+     id="g166">
+    <path
+       class="cls-14"
+       d="M625.5 241.5h134v49h-134z"
+       id="path162" />
+    <path
+       class="cls-13"
+       d="M759 242v48H626v-48h133m1-1H625v50h135v-50z"
+       id="path164" />
+  </g>
+  <text
+     class="cls-11"
+     transform="translate(666.84 263.05)"
+     id="text172"><tspan
+       x="0"
+       y="0"
+       id="tspan168">Container</tspan><tspan
+       x="5.59"
+       y="12"
+       id="tspan170">registry</tspan></text>
+  <g
+     id="g178">
+    <path
+       class="cls-14"
+       d="M485.5 241.5h134v49h-134z"
+       id="path174" />
+    <path
+       class="cls-13"
+       d="M619 242v48H486v-48h133m1-1H485v50h135v-50z"
+       id="path176" />
+  </g>
+  <text
+     class="cls-11"
+     id="text182"
+     x="523.91998"
+     y="271.04999"><tspan
+       x="523.91998"
+       y="271.04999"
+       id="tspan180">Galaxy_NG</tspan><!--tspan x="0" y="0">Automation</tspan><tspan x="19.92" y="12">Hub</tspan--></text>
+</svg>
