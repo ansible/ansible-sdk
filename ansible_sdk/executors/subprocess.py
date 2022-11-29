@@ -37,6 +37,7 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
             'private_data_dir': job_def.data_dir,
             'playbook': job_def.playbook,
             'artifacts_handler': None,
+            'envvars': job_def.env_vars,
             'extravars': job_def.extra_vars,
             'verbosity': job_def.verbosity,
             'limit': job_def.limit,
