@@ -7,18 +7,25 @@ async def run_one_stdout(executor, executor_options, job_options={}):
     """
     Run a single playbook job with several hosts and echo the display output as it arrives
     """
-    playbook = job_options.get('playbook', 'pb.yml')
+    playbook = job_options.get('playbook', None)
     datadir = job_options.get('datadir', 'datadir')
     limit = job_options.get('limit', None)
     ident = job_options.get('ident', None)
     forks = job_options.get('forks', None)
+    module = job_options.get('module', None)
+    module_args = job_options.get('module_args', None)
+    host_pattern = job_options.get('host_pattern', None)
+
     try:
         job_def = AnsibleJobDef(
             data_dir=datadir,
             playbook=playbook,
             limit=limit,
             ident=ident,
-            forks=forks
+            forks=forks,
+            module=module,
+            module_args=module_args,
+            host_pattern=host_pattern
         )
         job_status = await executor.submit_job(job_def, executor_options)
 
@@ -37,11 +44,14 @@ async def run_one_events(executor, executor_options, job_options={}):
     Run a single playbook job with several hosts using the specified executor and options, and dump the raw event
     output to the display as it arrives
     """
-    playbook = job_options.get('playbook', 'pb.yml')
+    playbook = job_options.get('playbook', None)
     datadir = job_options.get('datadir', 'datadir')
     limit = job_options.get('limit', None)
     ident = job_options.get('ident', None)
     forks = job_options.get('forks', None)
+    module = job_options.get('module', None)
+    module_args = job_options.get('module_args', None)
+    host_pattern = job_options.get('host_pattern', None)
 
     try:
         job_def = AnsibleJobDef(
@@ -49,7 +59,10 @@ async def run_one_events(executor, executor_options, job_options={}):
             playbook=playbook,
             limit=limit,
             ident=ident,
-            forks=forks
+            forks=forks,
+            module=module,
+            module_args=module_args,
+            host_pattern=host_pattern,
         )
         job_status = await executor.submit_job(job_def, executor_options)
 
@@ -72,11 +85,14 @@ async def run_many(executor, executor_options, job_options={}):
     Run five concurrent jobs (with slightly different definitions) against several hosts and dump the raw event
     output to the display as it arrives (interleaving output between the jobs).
     """
-    playbook = job_options.get('playbook', 'pb.yml')
+    playbook = job_options.get('playbook', None)
     datadir = job_options.get('datadir', 'datadir')
     limit = job_options.get('limit', None)
     ident = job_options.get('ident', None)
     forks = job_options.get('forks', None)
+    module = job_options.get('module', None)
+    module_args = job_options.get('module_args', None)
+    host_pattern = job_options.get('host_pattern', None)
 
     try:
         job_def = AnsibleJobDef(
@@ -84,7 +100,10 @@ async def run_many(executor, executor_options, job_options={}):
             playbook=playbook,
             limit=limit,
             ident=ident,
-            forks=forks
+            forks=forks,
+            module=module,
+            module_args=module_args,
+            host_pattern=host_pattern,
         )
 
         num_jobs = 5

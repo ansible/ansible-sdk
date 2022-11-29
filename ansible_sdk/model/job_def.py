@@ -21,6 +21,9 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     :param ident: The run identifier for this invocation of Runner. Will be used to create and name
                   the artifact directory holding the results of the invocation.
     :param forks: Control Ansible parallel concurrency
+    :param module: The module that will be invoked in ad-hoc mode by runner when executing Ansible.
+    :param module_args: The module arguments that will be supplied to ad-hoc mode.
+    :param host_pattern: The host pattern to match when running in ad-hoc mode.
     """
     # currently analogue to runner's private_data_dir; do we want to construct this ourselves?
     data_dir: str
@@ -29,6 +32,9 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     limit: str = None
     ident: str = None
     forks: t.Optional[int] = None
+    module: str = None
+    module_args: str = None
+    host_pattern: str = None
     inventory: t.Optional[t.Union[str, list[str]]] = None  # FUTURE: high-level inventory types?
     extra_vars: dict[str, t.Any] = field(default_factory=dict)
     verbosity: t.Optional[int] = None  # None or 1-5

@@ -8,7 +8,9 @@ from example_common import run_one_stdout, run_one_events, run_many
 async def main():
     executor = AnsibleSubprocessJobExecutor()
     executor_options = AnsibleSubprocessJobOptions()
-    job_options = {}
+    job_options = {
+        'playbook': 'pb.yml'
+    }
 
     await run_one_stdout(executor, executor_options, job_options=job_options)
     await run_one_events(executor, executor_options, job_options=job_options)
