@@ -15,6 +15,7 @@ async def run_one_stdout(executor, executor_options, job_options={}):
     module = job_options.get('module', None)
     module_args = job_options.get('module_args', None)
     host_pattern = job_options.get('host_pattern', None)
+    timeout = job_options.get('timeout', None)
 
     try:
         job_def = AnsibleJobDef(
@@ -26,6 +27,7 @@ async def run_one_stdout(executor, executor_options, job_options={}):
             module=module,
             module_args=module_args,
             host_pattern=host_pattern
+            timeout=timeout,
         )
         job_status = await executor.submit_job(job_def, executor_options)
 
@@ -52,6 +54,7 @@ async def run_one_events(executor, executor_options, job_options={}):
     module = job_options.get('module', None)
     module_args = job_options.get('module_args', None)
     host_pattern = job_options.get('host_pattern', None)
+    timeout = job_options.get('timeout', None)
 
     try:
         job_def = AnsibleJobDef(
@@ -63,6 +66,7 @@ async def run_one_events(executor, executor_options, job_options={}):
             module=module,
             module_args=module_args,
             host_pattern=host_pattern,
+            timeout=timeout,
         )
         job_status = await executor.submit_job(job_def, executor_options)
 
@@ -93,6 +97,7 @@ async def run_many(executor, executor_options, job_options={}):
     module = job_options.get('module', None)
     module_args = job_options.get('module_args', None)
     host_pattern = job_options.get('host_pattern', None)
+    timeout = job_options.get('timeout', None)
 
     try:
         job_def = AnsibleJobDef(
@@ -104,6 +109,7 @@ async def run_many(executor, executor_options, job_options={}):
             module=module,
             module_args=module_args,
             host_pattern=host_pattern,
+            timeout=timeout,
         )
 
         num_jobs = 5

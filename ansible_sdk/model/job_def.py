@@ -24,6 +24,8 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     :param module: The module that will be invoked in ad-hoc mode by runner when executing Ansible.
     :param module_args: The module arguments that will be supplied to ad-hoc mode.
     :param host_pattern: The host pattern to match when running in ad-hoc mode.
+    :param timeout: The timeout value in seconds that will be passed to ``subprocess`` invocation while executing
+                    command. It the timeout is triggered it will force cancel the execution.
     """
     # currently analogue to runner's private_data_dir; do we want to construct this ourselves?
     data_dir: str
@@ -38,3 +40,4 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     inventory: t.Optional[t.Union[str, list[str]]] = None  # FUTURE: high-level inventory types?
     extra_vars: dict[str, t.Any] = field(default_factory=dict)
     verbosity: t.Optional[int] = None  # None or 1-5
+    timeout: int = None

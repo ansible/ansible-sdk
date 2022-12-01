@@ -45,6 +45,7 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
             'module': job_def.module,
             'module_args': job_def.module_args,
             'host_pattern': job_def.host_pattern,
+            'timeout': job_def.timeout,
         }
 
         return args
