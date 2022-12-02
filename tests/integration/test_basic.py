@@ -17,6 +17,7 @@ async def main(job_options={}):
     module = job_options.get("module")
     module_args = job_options.get("module_args")
     host_pattern = job_options.get("host_pattern")
+    env_vars = job_options.get("env_vars", {})
 
     jobdef = AnsibleJobDef(
         data_dir=example_dir,
@@ -27,6 +28,7 @@ async def main(job_options={}):
         module=module,
         module_args=module_args,
         host_pattern=host_pattern,
+        env_vars=env_vars,
     )
 
     job_status = await executor.submit_job(jobdef, AnsibleSubprocessJobOptions())
@@ -100,4 +102,17 @@ def test_module(datadir):
         "module_args": 'msg="Hello World from Ansible SDK"',
         "host_pattern": "localhost",
     }
+    asyncio.run(main(job_options))
+
+
+def test_env_vars(datadir):
+    example_dir = str(datadir / "basic")
+    job_options = {
+        "datadir": example_dir,
+        "playbook": "envvars.yml",
+        "env_vars": {
+            "SAMPLE_ENV": "Sample env variable",
+        },
+    }
+
     asyncio.run(main(job_options))

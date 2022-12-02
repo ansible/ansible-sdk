@@ -16,6 +16,7 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     :param playbook: relative path or FQCN of a playbook to run under ``data_dir``
     :param inventory: relative path to inventory file(s) or directory under ``data_dir``, analogue to Ansible's ``-i`` option
     :param extra_vars: dictionary of variables for highest precedence level, analogue to Ansible's ``-e`` option
+    :param env_vars: Environment variables to be used when running Ansible.
     :param verbosity: None for default verbosity or 1-5, equivalent to Ansible's ``-v`` options
     :param limit: Matches Ansible's ``--limit`` parameter to further constrain the inventory to be used
     :param ident: The run identifier for this invocation of Runner. Will be used to create and name
@@ -38,6 +39,7 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     module_args: str = None
     host_pattern: str = None
     inventory: t.Optional[t.Union[str, list[str]]] = None  # FUTURE: high-level inventory types?
+    env_vars: dict[str, t.Any] = field(default_factory=dict)
     extra_vars: dict[str, t.Any] = field(default_factory=dict)
     verbosity: t.Optional[int] = None  # None or 1-5
     timeout: int = None
