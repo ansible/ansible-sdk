@@ -17,6 +17,8 @@ async def run_one_stdout(executor, executor_options, job_options={}):
     host_pattern = job_options.get('host_pattern', None)
     timeout = job_options.get('timeout', None)
     env_vars = job_options.get('env_vars', {})
+    role = job_options.get('role', None)
+    roles_path = job_options.get('roles_path', None)
 
     try:
         job_def = AnsibleJobDef(
@@ -27,10 +29,12 @@ async def run_one_stdout(executor, executor_options, job_options={}):
             forks=forks,
             module=module,
             module_args=module_args,
-            host_pattern=host_pattern
+            host_pattern=host_pattern,
             timeout=timeout,
             host_pattern=host_pattern,
             env_vars=env_vars,
+            role=role,
+            roles_path=roles_path,
         )
         job_status = await executor.submit_job(job_def, executor_options)
 
