@@ -29,7 +29,6 @@ async def run_one_stdout(executor, executor_options, job_options={}):
             forks=forks,
             module=module,
             module_args=module_args,
-            host_pattern=host_pattern,
             timeout=timeout,
             host_pattern=host_pattern,
             env_vars=env_vars,
@@ -126,7 +125,7 @@ async def run_many(executor, executor_options, job_options={}):
         # start all the jobs now
         job_statuses = [
             await executor.submit_job(
-            job_def.replace(extra_vars=dict(extra_var_value=f'job_{i}')), executor_options) for i in range(0, num_jobs)
+                job_def.replace(extra_vars=dict(extra_var_value=f'job_{i}')), executor_options) for i in range(0, num_jobs)
         ]
 
         async def dump_events(job_status):
@@ -152,4 +151,3 @@ async def run_many(executor, executor_options, job_options={}):
 
     finally:
         print('all done, exiting')
-
