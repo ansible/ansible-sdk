@@ -34,16 +34,16 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     data_dir: str
     # relative path to playbook in data_dir or FQCN
     playbook: str
-    limit: str = None
-    ident: str = None
+    limit: t.Optional[str] = None
+    ident: t.Optional[str] = None
     forks: t.Optional[int] = None
-    module: str = None
-    module_args: str = None
-    host_pattern: str = None
+    module: t.Optional[str] = None
+    module_args: t.Optional[str] = None
+    host_pattern: t.Optional[str] = None
     inventory: t.Optional[t.Union[str, list[str]]] = None  # FUTURE: high-level inventory types?
     env_vars: dict[str, t.Any] = field(default_factory=dict)
     extra_vars: dict[str, t.Any] = field(default_factory=dict)
     verbosity: t.Optional[int] = None  # None or 1-5
-    timeout: int = None
-    role: str = ''
+    timeout: t.Optional[int] = None
+    role: t.Optional[str] = None
     roles_path: t.Optional[t.Union[str, list[str]]] = None
