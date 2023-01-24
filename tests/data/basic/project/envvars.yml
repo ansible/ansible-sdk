@@ -1,4 +1,4 @@
 - hosts: taskhosts
   tasks:
-  - debug:
-      msg: "{{ lookup('ansible.builtin.env', 'SAMPLE_ENV') }}"
+    - debug:
+        msg: "{{ lookup('ansible.builtin.env', 'SAMPLE_ENV') }}"
