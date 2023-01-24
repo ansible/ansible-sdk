@@ -17,6 +17,7 @@ async def run_one_stdout(executor, executor_options, job_options={}):
     host_pattern = job_options.get('host_pattern', None)
     timeout = job_options.get('timeout', None)
     env_vars = job_options.get('env_vars', {})
+    extra_vars = job_options.get('extra_vars', {})
     role = job_options.get('role', None)
     roles_path = job_options.get('roles_path', None)
 
@@ -32,6 +33,7 @@ async def run_one_stdout(executor, executor_options, job_options={}):
             timeout=timeout,
             host_pattern=host_pattern,
             env_vars=env_vars,
+            extra_vars=extra_vars,
             role=role,
             roles_path=roles_path,
         )
