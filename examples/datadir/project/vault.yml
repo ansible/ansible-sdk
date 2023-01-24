@@ -1,4 +1,4 @@
 - hosts: taskhosts
   tasks:
-  - debug:
-      msg: "{{ secret_var }}"
+    - debug:
+        msg: "{{ secret_var }}"
