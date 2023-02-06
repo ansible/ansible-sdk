@@ -47,3 +47,4 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     timeout: int = None
     role: str = ''
     roles_path: t.Optional[t.Union[str, list[str]]] = None
+    metrics_output_dir_path: str = ''
