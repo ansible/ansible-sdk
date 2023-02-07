@@ -25,8 +25,8 @@ class AnsibleJobExecutorOptionsBase:
 class AnsibleJobExecutorBase(abc.ABC):
     @abc.abstractmethod
     async def submit_job(self, job_def: AnsibleJobDef, options: AnsibleJobExecutorOptionsBase) -> AnsibleJobStatus:
-        if job_def.metrics_output_dir_path and not os.path.exists(job_def.metrics_output_dir_path):
-            os.makedirs(job_def.metrics_output_dir_path)
+        if job_def.metrics_output_path and not os.path.exists(job_def.metrics_output_path):
+            os.makedirs(job_def.metrics_output_path)
 
     async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:
         metrics_calc = MetricsCalc()

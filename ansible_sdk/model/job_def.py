@@ -29,6 +29,7 @@ class AnsibleJobDef(_DataclassReplaceMixin):
                     command. It the timeout is triggered it will force cancel the execution.
     :param role: Name of the role to execute.
     :param roles_path: Directory or list of directories to assign to ANSIBLE_ROLES_PATH
+    :param metrics_output_path: A path to directory to collect metrics
     """
     # currently analogue to runner's private_data_dir; do we want to construct this ourselves?
     data_dir: str
@@ -47,4 +48,4 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     timeout: int = None
     role: str = ''
     roles_path: t.Optional[t.Union[str, list[str]]] = None
-    metrics_output_dir_path: str = ''
+    metrics_output_path: str = ''
