@@ -20,6 +20,7 @@ async def run_one_stdout(executor, executor_options, job_options={}):
     extra_vars = job_options.get('extra_vars', {})
     role = job_options.get('role', None)
     roles_path = job_options.get('roles_path', None)
+    metrics_output_path = job_options.get("metrics_output_path", "")
 
     try:
         job_def = AnsibleJobDef(
@@ -36,6 +37,7 @@ async def run_one_stdout(executor, executor_options, job_options={}):
             extra_vars=extra_vars,
             role=role,
             roles_path=roles_path,
+            metrics_output_path=metrics_output_path,
         )
         job_status = await executor.submit_job(job_def, executor_options)
 

@@ -30,7 +30,7 @@ class AnsibleJobExecutorBase(abc.ABC):
 
     async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:
         metrics_calc = MetricsCalc()
-        metrics_calc_task = asyncio.create_task(metrics_calc.collect_metrics(status_obj))
+        asyncio.create_task(metrics_calc.collect_metrics(status_obj))
 
         while True:
             line = await reader.readline()
