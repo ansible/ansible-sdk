@@ -26,7 +26,7 @@ class AnsibleJobExecutorBase(abc.ABC):
     @abc.abstractmethod
     async def submit_job(self, job_def: AnsibleJobDef, options: AnsibleJobExecutorOptionsBase) -> AnsibleJobStatus:
         if job_def.metrics_output_dir_path and not os.path.exists(job_def.metrics_output_dir_path):
-            os.makedirs(job_def.metrics_output_dir_path, exists_ok=True)
+            os.makedirs(job_def.metrics_output_dir_path)
 
     async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:
         metrics_calc = MetricsCalc()
@@ -67,6 +67,3 @@ class AnsibleJobExecutorBase(abc.ABC):
             else:
                 # print('\n\n*** unexpected data... ***\n\n')
                 pass
-
-        if metrics_calc_task:
-            await metrics_calc_task

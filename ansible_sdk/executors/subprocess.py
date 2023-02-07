@@ -59,6 +59,8 @@ class AnsibleSubprocessJobExecutor(AnsibleJobExecutorBase):
         return job_status._stream_task.cancelled()
 
     async def submit_job(self, job_def: AnsibleJobDef, options: AnsibleSubprocessJobOptions) -> AnsibleJobStatus:
+        await super().submit_job(job_def, options)
+
         loop = asyncio.get_running_loop()
 
         fds = os.pipe()
