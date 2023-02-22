@@ -2,6 +2,7 @@
 # Apache License 2.0 (see LICENSE or https://www.apache.org/licenses/LICENSE-2.0)
 
 import os
+import tarfile
 
 from datetime import datetime
 
@@ -35,12 +36,31 @@ class AnsibleModuleStats:
     task_duration: str
 
 
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class AnsibleCollectionStats:
+    job_id: str
+    collection_fqcn: str
+    collection_version: str
+    task_count: int
+    task_duration: str
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class AnsibleRoleStats:
+    job_id: str
+    role_fqcn: str
+    collection_version: str
+    task_count: int
+    task_duration: str
+
+
 @dataclasses.dataclass(frozen=False, kw_only=True)
 class MetricsData:
     started: datetime = dataclasses.field(default_factory=datetime.now)
     task_counter: int = 0
     task_data: dict = dataclasses.field(default_factory=dict)
     role_data: dict = dataclasses.field(default_factory=dict)
+    collection_data: dict = dataclasses.field(default_factory=dict)
 
 
 class MetricsCalc:
@@ -50,24 +70,40 @@ class MetricsCalc:
     async def collect_metrics(self, status_obj: AnsibleJobStatus):
         metrics_data = MetricsData()
         job_csv_filename = os.path.join(
-            status_obj._job_def.metrics_output_path, "job.csv"
+            status_obj._job_def.metrics_output_path, "jobs.csv"
         )
         module_csv_filename = os.path.join(
-            status_obj._job_def.metrics_output_path,
-            "modules.csv",
+            status_obj._job_def.metrics_output_path, "modules.csv",
+        )
+        collection_csv_filename = os.path.join(
+            status_obj._job_def.metrics_output_path, "collections.csv"
+        )
+        roles_csv_filename = os.path.join(
+            status_obj._job_def.metrics_output_path, "roles.csv"
         )
 
         job_headers = [x.name for x in dataclasses.fields(AnsibleJobStats)]
         module_headers = [x.name for x in dataclasses.fields(AnsibleModuleStats)]
+        collection_headers = [x.name for x in dataclasses.fields(AnsibleCollectionStats)]
+        role_headers = [x.name for x in dataclasses.fields(AnsibleRoleStats)]
 
         with open(job_csv_filename, "w") as job_csv_fh, \
+                open(collection_csv_filename, "w") as collection_csv_fh, \
+                open(roles_csv_filename, "w") as role_csv_fh, \
                 open(module_csv_filename, "w") as module_csv_fh:
             job_csv_writer = CSVAsync(job_csv_fh, job_headers, restval="NULL")
             await job_csv_writer.writeheader_async()
             module_csv_writer = CSVAsync(module_csv_fh, module_headers, restval="NULL")
             await module_csv_writer.writeheader_async()
+            collection_csv_writer = CSVAsync(
+                collection_csv_fh, collection_headers, restval="NULL"
+            )
+            await collection_csv_writer.writeheader_async()
+            role_csv_writer = CSVAsync(role_csv_fh, role_headers, restval="NULL")
+            await role_csv_writer.writeheader_async()
 
             async for ev in status_obj.events:
+                runner_ident = ev.get("runner_ident")
                 end_time = datetime.fromisoformat(ev.get("created"))
                 if ev.get("event") == "playbook_on_start":
                     metrics_data.started = datetime.fromisoformat(ev.get("created"))
@@ -75,12 +111,19 @@ class MetricsCalc:
                     metrics_data.task_counter += 1
                     # Update the count of task
                     resolved_task_name = ev["event_data"]["resolved_action"]
+                    collection_name = resolved_task_name.rsplit(".", 1)[0]
 
+                    # Update the count of collections
+                    metrics_data.collection_data[collection_name] = (
+                        metrics_data.collection_data.get(collection_name, 0) + 1
+                    )
+
+                    # Update the count of tasks
                     metrics_data.task_data[resolved_task_name] = (
                         metrics_data.task_data.get(resolved_task_name, 0) + 1
                     )
 
-                    # Update the count of role
+                    # Update the count of roles
                     resolved_role_name = ev["event_data"].get("role")
                     if resolved_role_name:
                         # Role name is not always populated
@@ -119,4 +162,46 @@ class MetricsCalc:
                         }
                     )
 
+                    # Write collection metrics data
+                    for collection, collection_count in metrics_data.collection_data.items():
+                        await collection_csv_writer.writerow_async(
+                            {
+                                "job_id": ev["runner_ident"],
+                                "collection_fqcn": collection,
+                                "collection_version": "",
+                                "task_count": collection_count,
+                                "task_duration": "",
+                            }
+                        )
+
+                    # Write role metrics data
+                    for role, role_count in metrics_data.role_data.items():
+                        await role_csv_writer.writerow_async(
+                            {
+                                "job_id": ev["runner_ident"],
+                                "role_fqcn": role,
+                                "collection_version": "",
+                                "task_count": role_count,
+                                "task_duration": "",
+                            }
+                        )
             status_obj.drop_event(ev)
+
+        # Create a tar file for further consumption
+        metrics_tar_filename = os.path.join(
+            status_obj._job_def.metrics_output_path,
+            "%s_%s_job_data.tar.gz"
+            % (datetime.strftime(end_time, "%Y_%m_%d_%H_%M_%S"), runner_ident),
+        )
+
+        datafiles = [
+            job_csv_filename,
+            module_csv_filename,
+            collection_csv_filename,
+            roles_csv_filename,
+        ]
+
+        with tarfile.open(metrics_tar_filename, "w") as tfh:
+            for filename in datafiles:
+                tfh.add(filename)
+                os.remove(filename)
