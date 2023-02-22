@@ -29,8 +29,9 @@ class AnsibleJobExecutorBase(abc.ABC):
             os.makedirs(job_def.metrics_output_path)
 
     async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:
-        metrics_calc = MetricsCalc()
-        asyncio.create_task(metrics_calc.collect_metrics(status_obj))
+        if status_obj._job_def.metrics_output_path:
+            metrics_calc = MetricsCalc()
+            asyncio.create_task(metrics_calc.collect_metrics(status_obj))
 
         while True:
             line = await reader.readline()
