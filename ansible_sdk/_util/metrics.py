@@ -2,14 +2,14 @@
 # Apache License 2.0 (see LICENSE or https://www.apache.org/licenses/LICENSE-2.0)
 
 import os
-import tarfile
-import aiofiles
 
 from datetime import datetime
 
 import ansible_sdk._util.dataclass_compat as dataclasses
 from ansible_sdk.model.job_status import AnsibleJobStatus
+from ansible_sdk._aiocompat.proxy import AsyncProxy
 from ansible_sdk._aiocompat.csv_async import CSVAsync
+from ansible_sdk._aiocompat.tar_async import TarFileAsync
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
@@ -190,13 +190,12 @@ class MetricsCalc:
                                 "task_duration": "",
                             }
                         )
-            status_obj.drop_event(ev)
 
         # Create a tar file for further consumption
+        _end_time = datetime.strftime(end_time, "%Y_%m_%d_%H_%M_%S")
         metrics_tar_filename = os.path.join(
             status_obj._job_def.metrics_output_path,
-            "%s_%s_job_data.tar.gz"
-            % (datetime.strftime(end_time, "%Y_%m_%d_%H_%M_%S"), runner_ident),
+            f"{_end_time}_{runner_ident}_job_data.tar.gz"
         )
 
         datafiles = [
@@ -206,7 +205,7 @@ class MetricsCalc:
             roles_csv_filename,
         ]
 
-        with tarfile.open(metrics_tar_filename, "w") as tfh:
+        async with TarFileAsync(metrics_tar_filename, "w") as tfh:
             for filename in datafiles:
-                tfh.add(os.path.basename(filename))
-                await aiofiles.os.remove(filename)
+                await tfh.add_async(filename, arcname=os.path.basename(filename))
+                await AsyncProxy.get_wrapped(os.remove)(filename)
