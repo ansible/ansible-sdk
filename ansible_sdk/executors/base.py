@@ -29,9 +29,10 @@ class AnsibleJobExecutorBase(abc.ABC):
             os.makedirs(job_def.metrics_output_path)
 
     async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:
+        metrics_collection_task = None
         if status_obj._job_def.metrics_output_path:
             metrics_calc = MetricsCalc()
-            asyncio.create_task(metrics_calc.collect_metrics(status_obj))
+            metrics_collection_task = asyncio.create_task(metrics_calc.collect_metrics(status_obj))
 
         while True:
             line = await reader.readline()
@@ -68,3 +69,6 @@ class AnsibleJobExecutorBase(abc.ABC):
             else:
                 # print('\n\n*** unexpected data... ***\n\n')
                 pass
+
+        if metrics_collection_task:
+            await metrics_collection_task

@@ -46,6 +46,6 @@ class AnsibleJobDef(_DataclassReplaceMixin):
     extra_vars: dict[str, t.Any] = field(default_factory=dict)
     verbosity: int | None = None  # None or 1-5
     timeout: int | None = None
-    role: str = ''
+    role: str | None = None
     roles_path: str | list[str] | None = None
-    metrics_output_path: str = ''
+    metrics_output_path: str | None = None

@@ -3,6 +3,7 @@
 
 import os
 import tarfile
+import aiofiles
 
 from datetime import datetime
 
@@ -73,7 +74,8 @@ class MetricsCalc:
             status_obj._job_def.metrics_output_path, "jobs.csv"
         )
         module_csv_filename = os.path.join(
-            status_obj._job_def.metrics_output_path, "modules.csv",
+            status_obj._job_def.metrics_output_path,
+            "modules.csv",
         )
         collection_csv_filename = os.path.join(
             status_obj._job_def.metrics_output_path, "collections.csv"
@@ -84,13 +86,17 @@ class MetricsCalc:
 
         job_headers = [x.name for x in dataclasses.fields(AnsibleJobStats)]
         module_headers = [x.name for x in dataclasses.fields(AnsibleModuleStats)]
-        collection_headers = [x.name for x in dataclasses.fields(AnsibleCollectionStats)]
+        collection_headers = [
+            x.name for x in dataclasses.fields(AnsibleCollectionStats)
+        ]
         role_headers = [x.name for x in dataclasses.fields(AnsibleRoleStats)]
 
-        with open(job_csv_filename, "w") as job_csv_fh, \
-                open(collection_csv_filename, "w") as collection_csv_fh, \
-                open(roles_csv_filename, "w") as role_csv_fh, \
-                open(module_csv_filename, "w") as module_csv_fh:
+        with (
+            open(job_csv_filename, "w") as job_csv_fh,
+            open(collection_csv_filename, "w") as collection_csv_fh,
+            open(roles_csv_filename, "w") as role_csv_fh,
+            open(module_csv_filename, "w") as module_csv_fh,
+        ):
             job_csv_writer = CSVAsync(job_csv_fh, job_headers, restval="NULL")
             await job_csv_writer.writeheader_async()
             module_csv_writer = CSVAsync(module_csv_fh, module_headers, restval="NULL")
@@ -110,7 +116,7 @@ class MetricsCalc:
                 if ev.get("event") == "playbook_on_task_start":
                     metrics_data.task_counter += 1
                     # Update the count of task
-                    resolved_task_name = ev["event_data"]["resolved_action"]
+                    resolved_task_name = ev["event_data"].get("resolved_action")
                     collection_name = resolved_task_name.rsplit(".", 1)[0]
 
                     # Update the count of collections
@@ -124,8 +130,7 @@ class MetricsCalc:
                     )
 
                     # Update the count of roles
-                    resolved_role_name = ev["event_data"].get("role")
-                    if resolved_role_name:
+                    if resolved_role_name := ev["event_data"].get("role"):
                         # Role name is not always populated
                         metrics_data.role_data[resolved_role_name] = (
                             metrics_data.role_data.get(resolved_role_name, 0) + 1
@@ -136,7 +141,7 @@ class MetricsCalc:
                     for task, task_count in metrics_data.task_data.items():
                         await module_csv_writer.writerow_async(
                             {
-                                "job_id": ev["runner_ident"],
+                                "job_id": runner_ident,
                                 "module_fqcn": task,
                                 "role_fqcn": "",
                                 "task_count": task_count,
@@ -147,16 +152,16 @@ class MetricsCalc:
                     # Write job metrics data
                     await job_csv_writer.writerow_async(
                         {
-                            "job_id": ev["runner_ident"],
+                            "job_id": runner_ident,
                             "job_type": "local",
                             "started": metrics_data.started,
                             "finished": end_time,
                             "job_state": "",
-                            "hosts_ok": len(ev["event_data"]["ok"]),
-                            "hosts_changed": len(ev["event_data"]["changed"]),
-                            "hosts_skipped": len(ev["event_data"]["skipped"]),
-                            "hosts_failed": len(ev["event_data"]["failures"]),
-                            "hosts_unreachable": len(ev["event_data"]["failures"]),
+                            "hosts_ok": len(ev["event_data"].get("ok")),
+                            "hosts_changed": len(ev["event_data"].get("changed")),
+                            "hosts_skipped": len(ev["event_data"].get("skipped")),
+                            "hosts_failed": len(ev["event_data"].get("failures")),
+                            "hosts_unreachable": len(ev["event_data"].get("failures")),
                             "task_count": metrics_data.task_counter,
                             "task_duration": end_time - metrics_data.started,
                         }
@@ -166,7 +171,7 @@ class MetricsCalc:
                     for collection, collection_count in metrics_data.collection_data.items():
                         await collection_csv_writer.writerow_async(
                             {
-                                "job_id": ev["runner_ident"],
+                                "job_id": runner_ident,
                                 "collection_fqcn": collection,
                                 "collection_version": "",
                                 "task_count": collection_count,
@@ -178,7 +183,7 @@ class MetricsCalc:
                     for role, role_count in metrics_data.role_data.items():
                         await role_csv_writer.writerow_async(
                             {
-                                "job_id": ev["runner_ident"],
+                                "job_id": runner_ident,
                                 "role_fqcn": role,
                                 "collection_version": "",
                                 "task_count": role_count,
@@ -203,5 +208,5 @@ class MetricsCalc:
 
         with tarfile.open(metrics_tar_filename, "w") as tfh:
             for filename in datafiles:
-                tfh.add(filename)
-                os.remove(filename)
+                tfh.add(os.path.basename(filename))
+                await aiofiles.os.remove(filename)
