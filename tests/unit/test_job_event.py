@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from ansible_sdk.model.job_event import AnsibleJobEvent
 
 
