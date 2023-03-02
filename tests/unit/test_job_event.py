@@ -5,7 +5,6 @@ from ansible_sdk.model.job_event import AnsibleJobEvent
 
 class TestAnsibleJobEvent:
     def test_status(self):
-        ts = datetime(2022, 12, 31, 7, 59, 30, 1234).isoformat()
         data = {"yes": "maybe"}
         event = AnsibleJobEvent(name="theEvent", raw_event_data=data)
         assert event.name == "theEvent"
