@@ -6,7 +6,7 @@ from __future__ import annotations
 import asyncio
 import typing as t
 
-from .job_event import AnsibleJobStatusEvent
+from .job_event import AnsibleJobEvent
 from .job_def import AnsibleJobDef
 
 
@@ -23,13 +23,13 @@ class AnsibleJobStatus:
         self._runner_status = None  # stash the runner status object here and consult it on completion for errors, etc
         self._job_def = job_def
 
-    def _add_event(self, evt: AnsibleJobStatusEvent):
+    def _add_event(self, evt: AnsibleJobEvent):
         self._events.append(evt)
         # pulse the appended event to awaken any blocked iterators
         self._events_appended.set()
         self._events_appended.clear()
 
-    def drop_event(self, evt: AnsibleJobStatusEvent):
+    def drop_event(self, evt: AnsibleJobEvent):
         """
         Request discard of event data that is no longer needed.
 
@@ -38,13 +38,13 @@ class AnsibleJobStatus:
         self._events[self._events.index(evt)] = None
 
     @property
-    async def events(self) -> t.AsyncIterator[AnsibleJobStatusEvent]:
+    async def events(self) -> t.AsyncIterator[AnsibleJobEvent]:
         """
         Async iterator to enumerate events from this job. Events are yielded live while the job is running; the
         iterator will not complete until the job has completed or failed. In cases of job failure or cancellation,
         the iterator will raise an exception with the appropriate detail.
 
-        :return: a live iterator of ``AnsibleJobStatusEvent`` data for this job
+        :return: a live iterator of ``AnsibleJobEvent`` data for this job
         """
         cur_ev_idx = 0
         streaming_complete = False

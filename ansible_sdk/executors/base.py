@@ -7,8 +7,8 @@ import abc
 import asyncio
 import json as async_json
 
-from ansible_sdk import AnsibleJobStatus, AnsibleJobDef
-from ansible_sdk._aiocompat.proxy import AsyncProxy
+from .. import AnsibleJobStatus, AnsibleJobDef, AnsibleJobEvent
+from .._aiocompat.proxy import AsyncProxy
 
 
 # wrap these modules in an AsyncProxy so they're asyncio-friendly
@@ -36,9 +36,10 @@ class AnsibleJobExecutorBase(abc.ABC):
 
             # print(f'got a line of length {len(line)}')
 
-            if 'event' in data:
+            if event_name := data.get('event'):
                 # print(f'appending event of type {data["event"]}')
-                status_obj._add_event(data)
+                wrapped_data = AnsibleJobEvent(name=event_name, raw_event_data=data)
+                status_obj._add_event(wrapped_data)
             elif 'zipfile' in data:
                 # print(f'zipfile coming, {data["zipfile"]} bytes expected')
                 zf = await reader.readline()
