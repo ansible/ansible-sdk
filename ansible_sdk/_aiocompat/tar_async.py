@@ -7,11 +7,15 @@ from tarfile import TarFile
 
 
 class TarFileAsync(TarFile):
-    async def __aenter__(self, *args, **kwargs):
-        return super().__enter__(*args, **kwargs)
+    async def __aenter__(self):
+        await self.init()
+        return self
 
-    async def __aexit__(self, *args, **kwargs):
-        return super().__exit__(*args, **kwargs)
+    async def init(self):
+        return super().__enter__()
+
+    async def __aexit__(self, *args):
+        return await super().__exit__(*args)
 
     async def open_async(self, *args, **kwargs):
         return await AsyncProxy.get_wrapped(self.open)(*args, **kwargs)

@@ -10,6 +10,7 @@ from ansible_sdk.model.job_status import AnsibleJobStatus
 from ansible_sdk._aiocompat.proxy import AsyncProxy
 from ansible_sdk._aiocompat.csv_async import CSVAsync
 from ansible_sdk._aiocompat.tar_async import TarFileAsync
+from ansible_sdk._aiocompat.file_async import AsyncFile
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
@@ -91,11 +92,11 @@ class MetricsCalc:
         ]
         role_headers = [x.name for x in dataclasses.fields(AnsibleRoleStats)]
 
-        with (
-            open(job_csv_filename, "w") as job_csv_fh,
-            open(collection_csv_filename, "w") as collection_csv_fh,
-            open(roles_csv_filename, "w") as role_csv_fh,
-            open(module_csv_filename, "w") as module_csv_fh,
+        async with (
+            AsyncFile.open(job_csv_filename, "w") as job_csv_fh,
+            AsyncFile.open(collection_csv_filename, "w") as collection_csv_fh,
+            AsyncFile.open(roles_csv_filename, "w") as role_csv_fh,
+            AsyncFile.open(module_csv_filename, "w") as module_csv_fh,
         ):
             job_csv_writer = CSVAsync(job_csv_fh, job_headers, restval="NULL")
             await job_csv_writer.writeheader_async()
