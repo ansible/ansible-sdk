@@ -1,15 +1,16 @@
 # Copyright: Ansible Project
 # Apache License 2.0 (see LICENSE or https://www.apache.org/licenses/LICENSE-2.0)
 
+import asyncio
 import os
+import tarfile
 
 from datetime import datetime
+from hashlib import sha256
 
 import ansible_sdk._util.dataclass_compat as dataclasses
 from ansible_sdk.model.job_status import AnsibleJobStatus
-from ansible_sdk._aiocompat.proxy import AsyncProxy
 from ansible_sdk._aiocompat.csv_async import CSVAsync
-from ansible_sdk._aiocompat.tar_async import TarFileAsync
 from ansible_sdk._aiocompat.file_async import AsyncFile
 
 
@@ -56,6 +57,13 @@ class AnsibleRoleStats:
     task_duration: str
 
 
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class AnsiblePlaybookStats:
+    job_id: str
+    event_id: str
+    event_data: str
+
+
 @dataclasses.dataclass(frozen=False, kw_only=True)
 class MetricsData:
     started: datetime = dataclasses.field(default_factory=datetime.now)
@@ -68,6 +76,34 @@ class MetricsData:
 class MetricsCalc:
     def __init__(self):
         pass
+
+    async def create_tarfile_async(self, file_paths, tarfile_path):
+        with tarfile.open(tarfile_path, "w:gz") as tar:
+            for file_path in file_paths:
+                tar.add(file_path, arcname=os.path.basename(file_path))
+                os.remove(file_path)
+
+    def encrypt_hostname_data(self, event_data):
+        enc_dict = {}
+        enc_key = [
+            'changed', 'dark', 'failures',
+            'ignored', 'ok', 'processed',
+            'rescued', 'skipped'
+        ]
+
+        def encrypt_keys(d):
+            enc_d = {}
+            for key, value in d.items():
+                dk = sha256(key.encode())
+                enc_d[dk.hexdigest()] = value
+            return enc_d
+
+        for key, value in event_data.items():
+            if key in enc_key:
+                enc_dict[key] = encrypt_keys(value)
+            else:
+                enc_dict[key] = value
+        return enc_dict
 
     async def collect_metrics(self, status_obj: AnsibleJobStatus):
         metrics_data = MetricsData()
@@ -84,6 +120,9 @@ class MetricsCalc:
         roles_csv_filename = os.path.join(
             status_obj._job_def.metrics_output_path, "roles.csv"
         )
+        pb_stats_csv_filename = os.path.join(
+            status_obj._job_def.metrics_output_path, "playbook_on_stats.csv"
+        )
 
         job_headers = [x.name for x in dataclasses.fields(AnsibleJobStats)]
         module_headers = [x.name for x in dataclasses.fields(AnsibleModuleStats)]
@@ -91,12 +130,14 @@ class MetricsCalc:
             x.name for x in dataclasses.fields(AnsibleCollectionStats)
         ]
         role_headers = [x.name for x in dataclasses.fields(AnsibleRoleStats)]
+        pb_stats_headers = [x.name for x in dataclasses.fields(AnsiblePlaybookStats)]
 
         async with (
-            AsyncFile.open(job_csv_filename, "w") as job_csv_fh,
-            AsyncFile.open(collection_csv_filename, "w") as collection_csv_fh,
-            AsyncFile.open(roles_csv_filename, "w") as role_csv_fh,
-            AsyncFile.open(module_csv_filename, "w") as module_csv_fh,
+            AsyncFile(job_csv_filename, "w") as job_csv_fh,
+            AsyncFile(collection_csv_filename, "w") as collection_csv_fh,
+            AsyncFile(roles_csv_filename, "w") as role_csv_fh,
+            AsyncFile(module_csv_filename, "w") as module_csv_fh,
+            AsyncFile(pb_stats_csv_filename, "w") as pb_stats_csv_fh,
         ):
             job_csv_writer = CSVAsync(job_csv_fh, job_headers, restval="NULL")
             await job_csv_writer.writeheader_async()
@@ -108,6 +149,8 @@ class MetricsCalc:
             await collection_csv_writer.writeheader_async()
             role_csv_writer = CSVAsync(role_csv_fh, role_headers, restval="NULL")
             await role_csv_writer.writeheader_async()
+            pb_stats_csv_writer = CSVAsync(pb_stats_csv_fh, pb_stats_headers, restval="NULL")
+            await pb_stats_csv_writer.writeheader_async()
 
             async for ev in status_obj.events:
                 runner_ident = ev.get("runner_ident")
@@ -138,6 +181,15 @@ class MetricsCalc:
                         )
 
                 if ev.get("event") == "playbook_on_stats":
+                    # Write playbook on stats data
+                    await pb_stats_csv_writer.writerow_async(
+                        {
+                            "job_id": runner_ident,
+                            "event_id": ev.get("uuid"),
+                            "event_data": self.encrypt_hostname_data(ev.get("event_data")),
+                        }
+                    )
+
                     # Write module metrics data
                     for task, task_count in metrics_data.task_data.items():
                         await module_csv_writer.writerow_async(
@@ -194,7 +246,7 @@ class MetricsCalc:
 
         # Create a tar file for further consumption
         _end_time = datetime.strftime(end_time, "%Y_%m_%d_%H_%M_%S")
-        metrics_tar_filename = os.path.join(
+        metrics_tar_filepath = os.path.join(
             status_obj._job_def.metrics_output_path,
             f"{_end_time}_{runner_ident}_job_data.tar.gz"
         )
@@ -204,9 +256,7 @@ class MetricsCalc:
             module_csv_filename,
             collection_csv_filename,
             roles_csv_filename,
+            pb_stats_csv_filename,
         ]
 
-        async with TarFileAsync(metrics_tar_filename, "w") as tfh:
-            for filename in datafiles:
-                await tfh.add_async(filename, arcname=os.path.basename(filename))
-                await AsyncProxy.get_wrapped(os.remove)(filename)
+        await asyncio.to_thread(self.create_tarfile_async, datafiles, metrics_tar_filepath)

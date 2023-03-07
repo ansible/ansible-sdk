@@ -19,4 +19,5 @@ class AsyncFile:
         return self.file
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        self.file.close()
+        await asyncio.to_thread(self.file.close)
+        return False
