@@ -6,12 +6,10 @@ from __future__ import annotations
 import abc
 import asyncio
 import json as async_json
-import os
 
 
 from .. import AnsibleJobStatus, AnsibleJobDef, AnsibleJobEvent
 from .._aiocompat.proxy import AsyncProxy
-from .._util.metrics import MetricsCalc
 
 
 # wrap these modules in an AsyncProxy so they're asyncio-friendly
@@ -25,15 +23,9 @@ class AnsibleJobExecutorOptionsBase:
 class AnsibleJobExecutorBase(abc.ABC):
     @abc.abstractmethod
     async def submit_job(self, job_def: AnsibleJobDef, options: AnsibleJobExecutorOptionsBase) -> AnsibleJobStatus:
-        if job_def.metrics_output_path and not os.path.exists(job_def.metrics_output_path):
-            os.makedirs(job_def.metrics_output_path)
+        pass
 
     async def _stream_events(self, reader: asyncio.StreamReader, status_obj: AnsibleJobStatus) -> None:
-        metrics_collection_task = None
-        if status_obj._job_def.metrics_output_path:
-            metrics_calc = MetricsCalc()
-            metrics_collection_task = asyncio.create_task(metrics_calc.collect_metrics(status_obj))
-
         while True:
             line = await reader.readline()
 
@@ -69,6 +61,3 @@ class AnsibleJobExecutorBase(abc.ABC):
             else:
                 # print('\n\n*** unexpected data... ***\n\n')
                 pass
-
-        if metrics_collection_task:
-            await metrics_collection_task

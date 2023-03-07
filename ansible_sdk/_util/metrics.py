@@ -77,7 +77,7 @@ class MetricsCalc:
     def __init__(self):
         pass
 
-    async def create_tarfile_async(self, file_paths, tarfile_path):
+    def create_tarfile(self, file_paths, tarfile_path):
         with tarfile.open(tarfile_path, "w:gz") as tar:
             for file_path in file_paths:
                 tar.add(file_path, arcname=os.path.basename(file_path))
@@ -259,4 +259,4 @@ class MetricsCalc:
             pb_stats_csv_filename,
         ]
 
-        await asyncio.to_thread(self.create_tarfile_async, datafiles, metrics_tar_filepath)
+        await asyncio.to_thread(self.create_tarfile, datafiles, metrics_tar_filepath)
