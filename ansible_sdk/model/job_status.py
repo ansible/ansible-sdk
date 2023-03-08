@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import typing as t
 
 from .job_event import AnsibleJobEvent
@@ -22,6 +23,15 @@ class AnsibleJobStatus:
         self._executor_options = None
         self._runner_status = None  # stash the runner status object here and consult it on completion for errors, etc
         self._job_def = job_def
+        self._metrics_collection_task: asyncio.Task | None = None
+
+        # FIXME: this can block, we probably need an awaitable factory method for this object...
+        if job_def.metrics_output_path:
+            from .._util.metrics import MetricsCalc
+
+            if not os.path.exists(job_def.metrics_output_path):
+                os.makedirs(job_def.metrics_output_path)
+            self._metrics_collection_task = asyncio.create_task(MetricsCalc().collect_metrics(self))
 
     def _add_event(self, evt: AnsibleJobEvent):
         self._events.append(evt)
@@ -105,3 +115,5 @@ class AnsibleJobStatus:
         """
         yield from self._stream_task
         self._stream_task.result()
+        if self._metrics_collection_task:
+            yield from self._metrics_collection_task

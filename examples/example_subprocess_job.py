@@ -9,7 +9,9 @@ async def main():
     executor = AnsibleSubprocessJobExecutor()
     executor_options = AnsibleSubprocessJobOptions()
     job_options = {
-        'playbook': 'pb.yml'
+        'playbook': 'pb.yml',
+        # Change the default job-related data path
+        'metrics_output_path': '/tmp/metrics',
     }
 
     await run_one_stdout(executor, executor_options, job_options=job_options)

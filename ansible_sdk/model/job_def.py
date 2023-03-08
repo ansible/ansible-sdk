@@ -29,21 +29,23 @@ class AnsibleJobDef(_DataclassReplaceMixin):
                     command. It the timeout is triggered it will force cancel the execution.
     :param role: Name of the role to execute.
     :param roles_path: Directory or list of directories to assign to ANSIBLE_ROLES_PATH
+    :param metrics_output_path: A path to directory to collect metrics
     """
     # currently analogue to runner's private_data_dir; do we want to construct this ourselves?
     data_dir: str
     # relative path to playbook in data_dir or FQCN
     playbook: str
-    limit: str = None
-    ident: str = None
-    forks: t.Optional[int] = None
-    module: str = None
-    module_args: str = None
-    host_pattern: str = None
-    inventory: t.Optional[t.Union[str, list[str]]] = None  # FUTURE: high-level inventory types?
+    limit: str | None = None
+    ident: str | None = None
+    forks: int | None = None
+    module: str | None = None
+    module_args: str | None = None
+    host_pattern: str | None = None
+    inventory: str | list[str] | None = None  # FUTURE: high-level inventory types?
     env_vars: dict[str, t.Any] = field(default_factory=dict)
     extra_vars: dict[str, t.Any] = field(default_factory=dict)
-    verbosity: t.Optional[int] = None  # None or 1-5
-    timeout: int = None
-    role: str = ''
-    roles_path: t.Optional[t.Union[str, list[str]]] = None
+    verbosity: int | None = None  # None or 1-5
+    timeout: int | None = None
+    role: str | None = None
+    roles_path: str | list[str] | None = None
+    metrics_output_path: str | None = None

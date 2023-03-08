@@ -7,6 +7,7 @@ import abc
 import asyncio
 import json as async_json
 
+
 from .. import AnsibleJobStatus, AnsibleJobDef, AnsibleJobEvent
 from .._aiocompat.proxy import AsyncProxy
 
