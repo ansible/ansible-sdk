@@ -1,4 +1,19 @@
 [tool.towncrier]
 package = "ansible_sdk"
 directory = "changelog/fragments"
-filename = "CHANGLOG.rst"
+filename = "CHANGELOG.rst"
+
+[[tool.towncrier.type]]
+directory = "release_summary"
+name = "Release Summary"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "fixed"
+name = "Fixed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "feature"
+name = "Features"
+showcontent = true
