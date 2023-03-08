@@ -49,6 +49,21 @@ The Ansible-SDK depends on Python 3.8+, Ansible Core, Ansible Runner and other t
 Red Hat Enterprise Linux - Install Ansible-SDK and dependecies directly on/into a RHEL Virtual machine.
 MacOS - Install PODMAN using BREW, and pull the RHEL8 image, ssh to that and follow the RHEL instructions above.
 
+## Publishing New Version
+
+Prepare the release:
+- Make sure your fork is up to date
+- Assuming your (local) repository has set `origin` to your GitHub fork and this repository is added as `upstream`: `git checkout main && git pull && git fetch upstream && git merge upstream/main`.
+- Create a release branch like `prepare_$VERSION_release`: `git checkout -b prepare_$VERSION_release -t upstream/main`
+
+- Run `towncrier build --yes --version $VERSION`. This will autogenerate `CHANGELOG.rst`.
+- Push the created release branch `prepare_$VERSION_release` to your GitHub repo and open a PR for review.
+
+Push the release:
+- Tag the release: `git tag -s $VERSION`
+- Push the tag: `git push origin $VERSION`
+
+
 ## Communication
 
 TBD
