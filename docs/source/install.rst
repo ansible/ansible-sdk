@@ -12,7 +12,7 @@ Ansible SDK requires the following software:
 
 Ansible SDK is currently available from source at `github <https://github.com/ansible/ansible-sdk>`_::
 
-    $ git clone git://github.com/ansible/ansible-sdk
+    $ git clone https://github.com/ansible/ansible-sdk.git
 
 Releases will be available for download from the `releases page <https://github.com/ansible/ansible-sdk/releases>`_
 
