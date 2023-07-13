@@ -1,15 +1,15 @@
 Ansible SDK for Python
 ======================
 
-The Ansible SDK provides lightweight Python library for dispatching and live-monitoring
+The Ansible SDK provides a lightweight Python library for dispatching and live-monitoring
 Ansible tasks, roles, and playbooks from the product or project.
 
 Dispatching of jobs can be local to the machine you are running your python application from or over Ansible Mesh using the receptor integrations.
 
-### Demo App to show how you can use the SDK in real use case - https://github.com/ansible/ansible_sdk_demo
+### [Demo application to show how you can use the SDK in real use case](https://github.com/ansible/ansible_sdk_demo)
 
 ## Documentation
-We are building extensive documentation and API reference here - https://ansible-sdk.readthedocs.io/en/latest/install.html
+We are building extensive documentation and API reference [here](https://ansible-sdk.readthedocs.io/en/latest/install.html).
 Please feel free to contribute and help the documentation effort.
 
 You can build the documentation from this repository as follows:
@@ -24,11 +24,14 @@ Remember that you need to pip install `docs/doc-requirements.txt` before running
 
 ## Releases and maintenance
 
-TBD
+| Release | Status                      | Expected end of life |
+| ------: | --------------------------: | -------------------: |
+|       1 | Maintained                  | TBA                  |
+
 
 ## Ansible version compatibility
 
-TBD
+This library has been tested against following Ansible versions: **>=2.9.10**.
 
 ## Installation
 
@@ -46,8 +49,8 @@ The Ansible-SDK depends on Python 3.8+, Ansible Core, Ansible Runner and other t
 
 ## Testing and Development
 
-Red Hat Enterprise Linux - Install Ansible-SDK and dependecies directly on/into a RHEL Virtual machine.
-MacOS - Install PODMAN using BREW, and pull the RHEL8 image, ssh to that and follow the RHEL instructions above.
+* Red Hat Enterprise Linux - Install Ansible-SDK and dependecies directly on/into a RHEL virtual machine.
+* MacOS - Install [`podman`](https://github.com/containers/podman) using `brew`, and pull the RHEL8 image, ssh to that and follow the RHEL instructions above.
 
 ## Publishing a new version
 
@@ -83,7 +86,14 @@ This section assumes that you have configured the following git remotes for your
 
 ## Communication
 
-TBD
+We welcome community contributions to this repo. If you find problems, please open an issue or create a PR against the [repo](https://github.com/ansible/ansible-sdk/issues/new).
+
+You can also join us on:
+
+- IRC - the ``#ansible-devel`` [irc.libera.chat](https://libera.chat/) channel
+
+See the [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html) for details on contributing to Ansible.
+
 
 ## License
 
