@@ -31,8 +31,8 @@ class AsyncProxy(object):
         # FIXME: cache these?
         @wraps(thing)
         async def _inner(*args, **kwargs):
-            loop = kwargs.pop['loop'] if 'loop' in kwargs else asyncio.get_running_loop()
-            executor = kwargs['executor'] if 'executor' in kwargs else None
+            loop = kwargs.pop('loop', asyncio.get_running_loop())
+            executor = kwargs.get('executor', None)
             f = partial(thing, *args, **kwargs)
             return await loop.run_in_executor(executor, f)
 
