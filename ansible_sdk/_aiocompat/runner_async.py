@@ -1,9 +1,9 @@
 # Copyright: Ansible Project
 # Apache License 2.0 (see LICENSE or https://www.apache.org/licenses/LICENSE-2.0)
 
-from .proxy import AsyncProxy
-
 from ansible_runner.interface import run as _run
+
+from .proxy import AsyncProxy
 
 
 def _write_payload_and_close(payload_writer, **kwargs):

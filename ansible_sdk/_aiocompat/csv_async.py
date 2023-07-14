@@ -2,8 +2,10 @@
 # Apache License 2.0 (see LICENSE or https://www.apache.org/licenses/LICENSE-2.0)
 
 from __future__ import annotations
-from .proxy import AsyncProxy
+
 from csv import DictWriter
+
+from .proxy import AsyncProxy
 
 
 class CSVAsync(DictWriter):

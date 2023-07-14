@@ -8,7 +8,7 @@ from types import ModuleType
 
 
 # hacky threadpool proxy wrapper around modules, adapted from http://zderadicka.eu/asyncio-proxy-for-blocking-functions/
-class AsyncProxy(object):
+class AsyncProxy:
     def __init__(self, wrapped):
         self._wrapped = wrapped
 

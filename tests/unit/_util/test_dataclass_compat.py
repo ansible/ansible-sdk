@@ -1,6 +1,7 @@
 import dataclasses as dataclasses_real
-import pytest
 import typing as t
+
+import pytest
 
 import ansible_sdk._util.dataclass_compat as dataclasses
 
@@ -13,7 +14,9 @@ class TestKWOnlyPolyfill:
             required_str: str
             optional_int: t.Optional[int] = None
 
-        kwargs = dict(required_str='strvalue', optional_int=42)
+        kwargs = {
+            "required_str": 'strvalue', "optional_int": 42
+        }
 
         dc = TestFrozenDC(**kwargs)
 
