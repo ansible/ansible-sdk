@@ -8,7 +8,9 @@ from ansible_sdk.executors import (
 )
 
 
-async def main(job_options={}):
+async def main(job_options=None):
+    if job_options is None:
+        job_options = {}
     executor = AnsibleSubprocessJobExecutor()
     example_dir = job_options.get("datadir")
     playbook = job_options.get("playbook")
@@ -127,7 +129,7 @@ def test_role(datadir):
     file_path = pathlib.Path(__file__).parent.resolve()
     job_options = {
         'role': 'hello_world',
-        'roles_path': '%s/roles' % file_path
+        'roles_path': f'{file_path}/roles'
     }
 
     asyncio.run(main(job_options))
