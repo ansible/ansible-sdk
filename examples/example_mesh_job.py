@@ -6,6 +6,9 @@ from example_common import run_one_stdout, run_one_events, run_many
 
 async def main():
     executor = AnsibleMeshJobExecutor()
+    job_options = {
+        'playbook': 'pb.yml',
+    }
     executor_options = AnsibleMeshJobOptions(
         control_socket_url='unix:///tmp/foo.sock',
         target_node='baz',
@@ -14,9 +17,9 @@ async def main():
         # container_runtime_exe='podman',
     )
 
-    await run_one_stdout(executor, executor_options)
-    await run_one_events(executor, executor_options)
-    await run_many(executor, executor_options)
+    await run_one_stdout(executor, executor_options, job_options=job_options)
+    await run_one_events(executor, executor_options, job_options=job_options)
+    await run_many(executor, executor_options, job_options=job_options)
 
 
 if __name__ == '__main__':
