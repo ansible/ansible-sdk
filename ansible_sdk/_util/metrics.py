@@ -108,20 +108,20 @@ class MetricsCalc:
     async def collect_metrics(self, status_obj: AnsibleJobStatus):
         metrics_data = MetricsData()
         job_csv_filename = os.path.join(
-            status_obj._job_def.metrics_output_path, "jobs.csv"
+            status_obj._job_def.metrics_output_path, "jobs.csv"  # type: ignore
         )
         module_csv_filename = os.path.join(
-            status_obj._job_def.metrics_output_path,
+            status_obj._job_def.metrics_output_path,  # type: ignore
             "modules.csv",
         )
         collection_csv_filename = os.path.join(
-            status_obj._job_def.metrics_output_path, "collections.csv"
+            status_obj._job_def.metrics_output_path, "collections.csv"  # type: ignore
         )
         roles_csv_filename = os.path.join(
-            status_obj._job_def.metrics_output_path, "roles.csv"
+            status_obj._job_def.metrics_output_path, "roles.csv"  # type: ignore
         )
         pb_stats_csv_filename = os.path.join(
-            status_obj._job_def.metrics_output_path, "playbook_on_stats.csv"
+            status_obj._job_def.metrics_output_path, "playbook_on_stats.csv"  # type: ignore
         )
 
         job_headers = [x.name for x in dataclasses.fields(AnsibleJobStats)]
@@ -154,9 +154,9 @@ class MetricsCalc:
 
             async for ev in status_obj.events:
                 runner_ident = ev.get("runner_ident")
-                end_time = datetime.fromisoformat(ev.get("created"))
+                end_time = datetime.fromisoformat(ev.get("created"))  # type: ignore
                 if ev.get("event") == "playbook_on_start":
-                    metrics_data.started = datetime.fromisoformat(ev.get("created"))
+                    metrics_data.started = datetime.fromisoformat(ev.get("created"))  # type: ignore
                 if ev.get("event") == "playbook_on_task_start":
                     metrics_data.task_counter += 1
                     # Update the count of task
@@ -247,7 +247,7 @@ class MetricsCalc:
         # Create a tar file for further consumption
         _end_time = datetime.strftime(end_time, "%Y_%m_%d_%H_%M_%S")
         metrics_tar_filepath = os.path.join(
-            status_obj._job_def.metrics_output_path,
+            status_obj._job_def.metrics_output_path,  # type: ignore
             f"{_end_time}_{runner_ident}_job_data.tar.gz"
         )
 

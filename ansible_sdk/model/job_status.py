@@ -17,9 +17,9 @@ class AnsibleJobStatus:
     Status object for monitoring running/completed jobs.
     """
     def __init__(self, job_def: AnsibleJobDef):
-        self._events = []
+        self._events: list[t.Optional[AnsibleJobEvent]] = []
         self._events_appended = asyncio.Event()
-        self._stream_task = None
+        self._stream_task: asyncio.Task | None = None
         self._executor_options = None
         self._runner_status = None  # stash the runner status object here and consult it on completion for errors, etc
         self._job_def = job_def
@@ -64,11 +64,15 @@ class AnsibleJobStatus:
                 if streaming_complete:
                     return
                 # ran out of events, but more are probably coming...
-                new_events_waiter = asyncio.create_task(self._events_appended.wait())
-                done, pending = await asyncio.wait([new_events_waiter, self._stream_task], return_when=asyncio.FIRST_COMPLETED)
+                new_events_waiter: asyncio.Task = asyncio.create_task(self._events_appended.wait())
+                tasks_list = [new_events_waiter]
+                if self._stream_task:
+                    tasks_list.append(self._stream_task)
+
+                done, pending = await asyncio.wait(tasks_list, return_when=asyncio.FIRST_COMPLETED)
                 if new_events_waiter in done:  # new events have been appended, just continue iteration...
                     continue
-                if self._stream_task in done:
+                if self._stream_task and self._stream_task in done:
                     self._stream_task.result()  # this will raise an error to the caller if the stream task failed
                     streaming_complete = True
                     continue  # yield remaining events, if any, then exit
