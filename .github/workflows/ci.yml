@@ -105,3 +105,22 @@ jobs:
 
       - name: Run tests
         run: tox
+
+  check:  # This job does nothing and is only used for the branch protection
+          # or multi-stage CI jobs, like making sure that all tests pass before
+          # a publishing job is started.
+          # https://github.com/marketplace/actions/alls-green#why
+    if: always()
+
+    needs:
+      - sanity
+      - unit
+      - integration
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
