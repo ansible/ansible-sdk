@@ -88,12 +88,7 @@ This section assumes that you have configured the following git remotes for your
 
 We welcome community contributions to this repo. If you find problems, please open an issue or create a PR against the [repo](https://github.com/ansible/ansible-sdk/issues/new).
 
-You can also join us on:
-
-- IRC - the ``#ansible-devel`` [irc.libera.chat](https://libera.chat/) channel
-
-See the [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html) for details on contributing to Ansible.
-
+Need help or want to discuss Ansible SDK including the documentation? See our [Community guide](https://ansible.readthedocs.io/projects/sdk/en/latest/community.html) to learn how to join the conversation! 
 
 ## License
 
