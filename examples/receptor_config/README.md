@@ -12,6 +12,7 @@ receptor --config /receptor_config/baz.yml
 
 # Terminal 4
 podman exec -it <CONTAINER_ID> /bin/bash
+dnf install -y git
 mkdir /src
 cd /src
 git clone https://github.com/ansible/ansible-sdk
@@ -19,5 +20,8 @@ cd ansible-sdk
 pip3 install -r requirements.txt
 pip3 install .
 cd examples
+# Normal Mesh Job demo
 python3 example_mesh_job.py
 
+# Mesh Job with extra vars demo
+python3 example_mesh_job_extra_vars.py

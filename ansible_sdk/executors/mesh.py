@@ -35,6 +35,7 @@ class AnsibleMeshJobExecutor(AnsibleJobExecutorBase):
         args = {
             'private_data_dir': job_def.data_dir,
             'playbook': job_def.playbook,
+            'extravars': job_def.extra_vars,
         }
 
         if options.container_runtime_exe and options.container_image_ref:
